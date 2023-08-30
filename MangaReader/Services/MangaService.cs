@@ -1,9 +1,6 @@
 ﻿using MangaReader.Data;
-using MangaReader.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using MangaReader.Model;
+
 using System.Threading.Tasks;
 
 namespace MangaReader.Services
@@ -17,7 +14,7 @@ namespace MangaReader.Services
             _context = context;
         }
 
-        public async Task AddMangaAsync(Manga manga)
+        public async Task AddMangaAsync(MangaModel manga)
         {
             _context.Mangas.Add(manga);
             await _context.SaveChangesAsync();

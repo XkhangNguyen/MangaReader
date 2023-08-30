@@ -1,0 +1,56 @@
+﻿<UserControl x:Class="MangaReader.View.ReadScene"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MangaReader.View"
+             mc:Ignorable="d" 
+             d:DesignHeight="1080" d:DesignWidth="960"
+             >
+    <Grid  Background="{DynamicResource BackgroundColor}">
+        <ScrollViewer VerticalScrollBarVisibility="Visible">
+            <Grid DataContext="{Binding ChapterModel}" MaxWidth="960">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Text="{Binding MangaModel.Title}" Style="{StaticResource MangaTitleDetail_Style}" />
+
+                <StackPanel Grid.Row="1">
+                    <Grid HorizontalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="0">
+                            <TextBlock Text="Prev"></TextBlock>
+                        </Button>
+                        <ComboBox Grid.Column="1">
+
+                        </ComboBox>
+                        <Button Grid.Column="2">
+                            <TextBlock Text="Next"></TextBlock>
+                        </Button>
+                    </Grid>
+                </StackPanel>
+
+                <StackPanel Grid.Row="2">
+                    <ItemsControl ItemsSource="{Binding ChapterImageURLs}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <UniformGrid Margin="0,2.5,0,0" Columns="1" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding}" Style="{StaticResource MangaTitleDetail_Style}" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Grid>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

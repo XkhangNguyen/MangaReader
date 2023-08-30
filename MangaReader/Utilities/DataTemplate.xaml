@@ -1,0 +1,18 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:vm="clr-namespace:MangaReader.ViewModel"
+                    xmlns:view="clr-namespace:MangaReader.View"
+                    >
+    <DataTemplate DataType="{x:Type vm:LoadSceneVM}">
+        <view:LoadScene/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type vm:MangaDetailVM}">
+        <view:MangaDetail/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type vm:MangasDisplayVM}">
+        <view:MangasDisplay/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type vm:ReadSceneVM}">
+        <view:ReadScene/>
+    </DataTemplate>
+</ResourceDictionary>

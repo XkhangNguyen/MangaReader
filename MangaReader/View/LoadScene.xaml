@@ -1,0 +1,27 @@
+﻿<UserControl x:Class="MangaReader.View.LoadScene"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:vm="clr-namespace:MangaReader.ViewModel"
+             mc:Ignorable="d" 
+             d:DesignHeight="1080" d:DesignWidth="960"
+             Style="{StaticResource Scene_Style}"
+             >
+    <UserControl.DataContext>
+        <vm:LoadSceneVM/>
+    </UserControl.DataContext>
+
+    <Grid Background="{DynamicResource BackgroundColor}">
+        <Grid VerticalAlignment="Center" Margin="0,0,0,100">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" Foreground="{DynamicResource MangaTitle}" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="30">Manga Reader</TextBlock>
+            <Image Grid.Row="1" Margin="0,20,0,20"  x:Name="splashImage" Source="../Images/Icon.jpg" HorizontalAlignment="Center" VerticalAlignment="Center" Width="350" Height="350"/>
+            <TextBlock Grid.Row="2" Foreground="{DynamicResource MangaTitle}" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="20">Loading...</TextBlock>
+        </Grid>
+    </Grid>
+</UserControl>

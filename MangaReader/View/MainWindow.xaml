@@ -1,0 +1,12 @@
+﻿<Window x:Class="MangaReader.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Manga Reader" Height="1080" Width="960"
+        WindowStartupLocation="CenterScreen"
+        >
+
+    <Grid Background="{DynamicResource BackgroundColor}">
+        <ContentControl x:Name="Scenes"
+                        Content="{Binding Navigation.CurrentView}"/>
+    </Grid>
+</Window>

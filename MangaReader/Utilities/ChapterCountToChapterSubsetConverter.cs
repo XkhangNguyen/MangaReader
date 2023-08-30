@@ -3,18 +3,18 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Data;
-using MangaReader.Models;
+using MangaReader.Model;
 
-namespace MangaReader
+namespace MangaReader.Utilities
 {
-   public class ChapterCountToChapterSubsetConverter : IValueConverter
-   {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    public class ChapterCountToChapterSubsetConverter : IValueConverter
+    {
+        public object? Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is List<Chapter> chapters)
+            if (value is List<ChapterModel> chapters)
             {
                 int maxChaptersToShow = 3;
-                return chapters.Skip(chapters.Count - maxChaptersToShow).Reverse().ToList();
+                return chapters.Take(maxChaptersToShow).ToList();
             }
 
             return null;
@@ -24,6 +24,6 @@ namespace MangaReader
         {
             throw new NotImplementedException();
         }
-   }
+    }
 }
 

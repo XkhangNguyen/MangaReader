@@ -1,4 +1,4 @@
-﻿using MangaReader.Models;
+﻿using MangaReader.Model;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -10,7 +10,7 @@ namespace MangaReader.Data
 {
     public class ApplicationDbContext : DbContext
     {
-        public DbSet<Manga> Mangas { get; set; }
+        public DbSet<MangaModel> Mangas { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)

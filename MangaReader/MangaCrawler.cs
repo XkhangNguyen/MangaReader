@@ -1,11 +1,13 @@
 ﻿using HtmlAgilityPack;
-using MangaReader.Models;
+using MangaReader.Model;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Documents;
 
 namespace MangaReader
 {
@@ -24,7 +26,8 @@ namespace MangaReader
         private readonly string _genreNodesXPath = ".//li[@class=\"kind row\"]//a";
         private readonly string _authorXPath = ".//li[@class=\"author row\"]/p[2]";
         private readonly string _chapterXPath = ".//div[@id=\"nt_listchapter\"]//nav//li";
-        private readonly string _chapterImgNodesXPath = "//div[@class=\"reading-detail box_doc\"]//div";
+        private readonly string _chapterNumberXPath = ".//a";
+        private readonly string _chapterImgsXPath = "//div[@class=\"reading-detail box_doc\"]//div";
 
 
         public MangaCrawler()
@@ -33,19 +36,19 @@ namespace MangaReader
             _httpClient.DefaultRequestHeaders.Add("User-Agent", _userAgentString);
         }
 
-        public async Task<List<Manga>> CrawlNewUpdatedManga()
+        public async Task<ObservableCollection<MangaModel>> CrawlNewUpdatedManga()
         {
-            List<Manga> mangaItems = await CrawlMangaDataAsync();
-            foreach(Manga manga in mangaItems)
+            ObservableCollection<MangaModel> mangaItems = await CrawlMangaDataAsync();
+            foreach(MangaModel manga in mangaItems)
             {
                 manga.Chapters = await CrawlMangaChaptersAsync(manga);
             }
             return mangaItems;
         }
 
-        public async Task<List<Manga>> CrawlMangaDataAsync()
+        public async Task<ObservableCollection<MangaModel>> CrawlMangaDataAsync()
         {
-            var mangaList = new List<Manga>();
+            var mangaList = new ObservableCollection<MangaModel>();
 
             var htmlDocument = await GetHtmlDocumentAsync(_pageUrl);
 
@@ -55,7 +58,7 @@ namespace MangaReader
             {
                 foreach (var mangaNode in mangaNodes)
                 {
-                    var manga = new Manga();
+                    var manga = new MangaModel();
 
                     manga.MangaLink = mangaNode.SelectSingleNode(_mangaLinkXPath).GetAttributeValue("href", "");
 
@@ -71,7 +74,8 @@ namespace MangaReader
                         manga.Description = detailNode.SelectSingleNode(_descriptionXPath).InnerText.Trim();
 
                         var genreNodes = detailNode.SelectNodes(_genreNodesXPath);
-
+                        if (genreNodes == null)
+                            continue;
                         foreach (var genreNode in genreNodes)
                         {
                             manga.Genre.Add(genreNode.InnerText);
@@ -105,7 +109,7 @@ namespace MangaReader
             return htmlDocument;
         }
 
-        public async Task<List<Chapter>> CrawlMangaChaptersAsync(Manga manga)
+        public async Task<List<ChapterModel>> CrawlMangaChaptersAsync(MangaModel manga)
         {
             var mangaPageDocument = await GetHtmlDocumentAsync(manga.MangaLink);
 
@@ -113,28 +117,35 @@ namespace MangaReader
             var detailNode = mangaPageDocument.DocumentNode.SelectSingleNode(_detailNodeXPath);
             var chapterNodes = detailNode.SelectNodes(_chapterXPath);
 
-            manga.Chapters = new List<Chapter>(chapterNodes.Count);
+            if (chapterNodes == null)
+            {
+                return null;
+            }
+
+            manga.Chapters = new List<ChapterModel>(chapterNodes.Count);
 
             for (int i = chapterNodes.Count - 1; i >= 0; i--)
             {
-                Chapter chapter = new Chapter();
-                Match match = Regex.Match(chapterNodes[i].InnerText, @"\d+(\.\d+)?");
+                ChapterModel chapter = new ChapterModel();
+                var chapterNumberNode = chapterNodes[i].SelectSingleNode(_chapterNumberXPath);
+                Match match = Regex.Match(chapterNumberNode.InnerText, @"\d+(\.\d+)?");
 
                 chapter.ChapterNumber = float.Parse(match.Value);
                 chapter.ChapterLink = chapterNodes[i].SelectSingleNode(".//a").GetAttributeValue("href", "");
-
+                chapter.MangaModel = manga;
                 manga.Chapters.Add(chapter);
             }
+
+            manga.Chapters.Reverse();
 
             return manga.Chapters;
         }
 
-        public async Task<List<string>> CrawlChapterImgUrlAsync(Chapter chapter)
+        public async Task<List<string>> CrawlChapterImgUrlAsync(ChapterModel chapter)
         {
-
             var chapterPageDocument = await (GetHtmlDocumentAsync(chapter.ChapterLink));
 
-            var chapterImgNodes = chapterPageDocument.DocumentNode.SelectNodes(_chapterImgNodesXPath);
+            var chapterImgNodes = chapterPageDocument.DocumentNode.SelectNodes(_chapterImgsXPath);
 
             chapter.ChapterImageURLs = new List<string>(chapterImgNodes.Count);
             foreach (var chapterImgNode in chapterImgNodes)

@@ -36,8 +36,8 @@
                                                   RelativeSource={RelativeSource 
                                                   AncestorType=UserControl}}"
                                 CommandParameter="{Binding}"
-                                >           
-                                    <Image x:Name="CoverImage" Loaded="CoverImage_Loaded" Style="{StaticResource CoverImage_Style}"/>
+                                >
+                                    <Image Source="{Binding CoverImageURL}" Style="{StaticResource CoverImage_Style}"/>
                                 </Button>
                                 <!-- Manga Title -->
                                 <Button Style="{DynamicResource LinkButton_Style}" Margin="0,10,0,0" Padding="0" Grid.Row="1" HorizontalAlignment="Left"
@@ -46,7 +46,7 @@
                                                   AncestorType=UserControl}}"
                                 CommandParameter="{Binding}"
                                 >
-                                    <TextBlock Text="{Binding Title}" Style="{StaticResource MangaTitle_Style}"/>
+                                    <TextBlock Text="{Binding MangaTitle}" Style="{StaticResource MangaTitle_Style}"/>
                                 </Button>
                                 <!-- Grid for the 3 nearest chapters -->
                                 <StackPanel Grid.Row="2">

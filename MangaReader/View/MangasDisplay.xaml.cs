@@ -20,12 +20,12 @@ namespace MangaReader.View
             InitializeComponent();
         }
 
-        private void CoverImage_Loaded(object sender, RoutedEventArgs e)
+/*        private void CoverImage_Loaded(object sender, RoutedEventArgs e)
         {
             if (sender is Image coverImage && coverImage.DataContext is MangaModel manga)
             {
                 coverImage.Source = new BitmapImage(new Uri("https:" + manga.CoverImageURL));
             }
-        }
+        }*/
     }
 }

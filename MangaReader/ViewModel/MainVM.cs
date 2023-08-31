@@ -3,14 +3,16 @@ using MangaReader.Services;
 using MangaReader.Stores;
 using MangaReader.Utilities;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace MangaReader.ViewModel
 {
     public class MainVM : ViewModelBase
     {
-        private readonly MangaCrawler? _mangaCrawler;
+        private readonly OtakuSancCrawler? _mangaCrawler;
         private MangaStore? _mangaStore;
         ObservableCollection<MangaModel>? _mangaModels;
         //private Timer _timer;
@@ -24,19 +26,19 @@ namespace MangaReader.ViewModel
             set { _navigation = value; OnPropertyChanged(); }
         }
 
-        public MainVM(INavigationService navigationService, MangaStore mangaStore, MangaCrawler mangaCrawler)
+        public MainVM(INavigationService navigationService, MangaStore mangaStore, OtakuSancCrawler mangaCrawler)
         {
             Navigation = navigationService;
             Navigation?.NavigateTo<LoadSceneVM>();
 
             _mangaCrawler = mangaCrawler;
-            LoadMangaDataAsync();
             _mangaStore = mangaStore;
 
+            LoadMangaDataAsync();
             //_timer = new Timer(state => LoadMangaDataAsync(), null, TimeSpan.Zero, TimeSpan.FromSeconds(15));
 
         }
-        private async void LoadMangaDataAsync()
+        /*private async void LoadMangaDataAsync()
         {
             if (_mangaCrawler != null)
             {
@@ -48,5 +50,34 @@ namespace MangaReader.ViewModel
 
             }
         }
+*/
+        private void LoadMangaDataAsync()
+        {
+            if (_mangaCrawler != null)
+            {
+                _mangaModels = new ObservableCollection<MangaModel>();
+                string filePath = @"C:\Users\Admin\Desktop\Projects\MangaReader\MangaScraper\results.json";
+                foreach (var manga in JsonMangaReader.ReadJsonFile(filePath))
+                {
+                    _mangaModels.Add(manga);
+                }
+
+                _mangaStore?.GetMangas(_mangaModels);
+
+                Navigation?.NavigateTo<MangasDisplayVM>();
+            }
+        }
+
+        /*private async IAsyncEnumerable<MangaModel> CrawlNewUpdatedMangaAsync()
+        {
+            if (_mangaCrawler != null)
+            {
+                await foreach (var manga in _mangaCrawler.CrawlMangaDataAsync())
+                {
+                    manga.Chapters = await _mangaCrawler.CrawlMangaChaptersAsync(manga);
+                    yield return manga;
+                }
+            }
+        }*/
     }
 }

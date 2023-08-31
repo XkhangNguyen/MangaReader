@@ -44,7 +44,7 @@ namespace MangaReader.ViewModel
         {
             _mangaStore?.GetChapter(chapterModel);
             Navigation?.NavigateTo<ReadSceneVM>();
-        }
+            }
 
         private void OnMangaCreated(MangaModel mangaModel)
         {

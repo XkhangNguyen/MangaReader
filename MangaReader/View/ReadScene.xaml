@@ -13,11 +13,13 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Row="0" Text="{Binding MangaModel.Title}" Style="{StaticResource MangaTitleDetail_Style}" />
+                <TextBlock Grid.Row="1" Text="{Binding ChapterImageURLs.Count}" Style="{DynamicResource MangaTitleDetail_Style}"/>
 
-                <StackPanel Grid.Row="1">
+                <StackPanel Grid.Row="2">
                     <Grid HorizontalAlignment="Center">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
@@ -36,7 +38,7 @@
                     </Grid>
                 </StackPanel>
 
-                <StackPanel Grid.Row="2">
+                <StackPanel Grid.Row="3">
                     <ItemsControl ItemsSource="{Binding ChapterImageURLs}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
@@ -45,7 +47,14 @@
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding}" Style="{StaticResource MangaTitleDetail_Style}" />
+                                <Grid HorizontalAlignment="Center">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Row="0" Text="{Binding}" Style="{DynamicResource MangaTitleDetail_Style}"/>
+                                    <Image Grid.Row="1" Source="{Binding}" Style="{StaticResource CoverImageDetail_Style}" />
+                                </Grid>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>

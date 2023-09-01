@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:MangaReader.View"
              mc:Ignorable="d" 
              d:DesignHeight="1080" d:DesignWidth="960"
+             Style="{StaticResource Scene_Style}"
              >
     <Grid  Background="{DynamicResource BackgroundColor}">
         <ScrollViewer VerticalScrollBarVisibility="Visible">

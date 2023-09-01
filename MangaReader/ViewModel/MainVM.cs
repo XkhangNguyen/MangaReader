@@ -1,12 +1,14 @@
 ﻿using MangaReader.Model;
 using MangaReader.Services;
 using MangaReader.Stores;
+using MangaReader.Ultilities;
 using MangaReader.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace MangaReader.ViewModel
 {
@@ -17,9 +19,9 @@ namespace MangaReader.ViewModel
         ObservableCollection<MangaModel>? _mangaModels;
         //private Timer _timer;
 
+        public ICommand NavigateBackCommand { get;}
 
         private INavigationService? _navigation;
-
         public INavigationService? Navigation
         {
             get { return _navigation; }
@@ -37,20 +39,9 @@ namespace MangaReader.ViewModel
             LoadMangaDataAsync();
             //_timer = new Timer(state => LoadMangaDataAsync(), null, TimeSpan.Zero, TimeSpan.FromSeconds(15));
 
+            NavigateBackCommand = new RelayCommand<ViewModelBase>(GoBack);
         }
-        /*private async void LoadMangaDataAsync()
-        {
-            if (_mangaCrawler != null)
-            {
-                _mangaModels = await _mangaCrawler.CrawlNewUpdatedManga();
 
-                _mangaStore?.GetMangas(_mangaModels);
-
-                Navigation?.NavigateTo<MangasDisplayVM>();
-
-            }
-        }
-*/
         private void LoadMangaDataAsync()
         {
             if (_mangaCrawler != null)
@@ -68,16 +59,9 @@ namespace MangaReader.ViewModel
             }
         }
 
-        /*private async IAsyncEnumerable<MangaModel> CrawlNewUpdatedMangaAsync()
+        private void GoBack(ViewModelBase viewModelBase)
         {
-            if (_mangaCrawler != null)
-            {
-                await foreach (var manga in _mangaCrawler.CrawlMangaDataAsync())
-                {
-                    manga.Chapters = await _mangaCrawler.CrawlMangaChaptersAsync(manga);
-                    yield return manga;
-                }
-            }
-        }*/
+            Navigation?.NavigateBack();
+        }
     }
 }

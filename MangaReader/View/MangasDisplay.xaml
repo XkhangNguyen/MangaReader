@@ -58,7 +58,7 @@
                                         </ItemsControl.ItemsPanel>
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
-                                                <TextBlock Text="{Binding ChapterNumber, StringFormat='Chapter {0}'}" Style="{StaticResource ChapterTitle_Style}"/>
+                                                <TextBlock Text="{Binding ChapterNumber}" Style="{StaticResource ChapterTitle_Style}"/>
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
                                     </ItemsControl>

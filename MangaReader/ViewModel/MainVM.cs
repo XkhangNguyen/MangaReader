@@ -20,6 +20,7 @@ namespace MangaReader.ViewModel
         //private Timer _timer;
 
         public ICommand NavigateBackCommand { get;}
+        public ICommand MangaDisplayCommand { get;}
 
         private INavigationService? _navigation;
         public INavigationService? Navigation
@@ -40,6 +41,12 @@ namespace MangaReader.ViewModel
             //_timer = new Timer(state => LoadMangaDataAsync(), null, TimeSpan.Zero, TimeSpan.FromSeconds(15));
 
             NavigateBackCommand = new RelayCommand<ViewModelBase>(GoBack);
+            MangaDisplayCommand = new RelayCommand<ViewModelBase>(GoToMangaDisplay);
+        }
+
+        private void GoToMangaDisplay(ViewModelBase? @base)
+        {
+            Navigation?.NavigateTo<MangasDisplayVM>();
         }
 
         private void LoadMangaDataAsync()

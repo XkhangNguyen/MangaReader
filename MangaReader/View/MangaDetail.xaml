@@ -92,7 +92,7 @@
                                                                   AncestorType=UserControl}}"
                                                 CommandParameter="{Binding}"
                                                 >
-                                            <TextBlock Text="{Binding ChapterNumber, StringFormat='Chapter {0}'}" Style="{StaticResource ChapterTitleDetail_Style}"/>
+                                            <TextBlock Text="{Binding ChapterNumber}" Style="{StaticResource ChapterTitleDetail_Style}"/>
                                         </Button>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>

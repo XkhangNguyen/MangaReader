@@ -23,7 +23,16 @@ namespace MangaReader.Model
             try
             {
                 string jsonText = File.ReadAllText(filePath);
+
                 List<MangaModel>? mangaList = JsonConvert.DeserializeObject<List<MangaModel>>(jsonText);
+                foreach(var manga in mangaList)
+                {
+                        
+                    foreach(var chapter in manga.Chapters)
+                    {
+                        chapter.MangaModel = manga;
+                    }
+                }
                 return mangaList;
             }
             catch (Exception ex)

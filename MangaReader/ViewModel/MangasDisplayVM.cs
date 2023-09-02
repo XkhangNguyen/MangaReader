@@ -2,7 +2,6 @@
 using System.Collections.ObjectModel;
 using MangaReader.Stores;
 using MangaReader.Ultilities;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using MangaReader.Services;
 
 namespace MangaReader.ViewModel

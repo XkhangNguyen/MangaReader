@@ -17,7 +17,7 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0" Text="{Binding MangaModel.Title}" Style="{StaticResource MangaTitleDetail_Style}" />
+                <TextBlock Grid.Row="0" Text="{Binding MangaModel.MangaTitle}" Style="{StaticResource MangaTitleDetail_Style}" />
                 <TextBlock Grid.Row="1" Text="{Binding ChapterImageURLs.Count}" Style="{DynamicResource MangaTitleDetail_Style}"/>
 
                 <StackPanel Grid.Row="2">

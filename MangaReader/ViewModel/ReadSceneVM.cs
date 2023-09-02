@@ -21,7 +21,7 @@ namespace MangaReader.ViewModel
             _mangaStore.ChapterCreated += OnChapterCreated;
         }
 
-        private async void OnChapterCreated(ChapterModel chapterModel)
+        private void OnChapterCreated(ChapterModel chapterModel)
         {
             ChapterModel = chapterModel;
 

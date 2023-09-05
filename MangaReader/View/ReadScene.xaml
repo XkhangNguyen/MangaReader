@@ -8,19 +8,18 @@
              d:DesignHeight="1080" d:DesignWidth="960"
              Style="{StaticResource Scene_Style}"
              >
+
     <Grid  Background="{DynamicResource BackgroundColor}">
         <ScrollViewer VerticalScrollBarVisibility="Visible">
             <Grid DataContext="{Binding ChapterModel}" MaxWidth="960">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Row="0" Text="{Binding MangaModel.MangaTitle}" Style="{StaticResource MangaTitleDetail_Style}" />
-                <TextBlock Grid.Row="1" Text="{Binding ChapterImageURLs.Count}" Style="{DynamicResource MangaTitleDetail_Style}"/>
 
-                <StackPanel Grid.Row="2">
+                <StackPanel Grid.Row="1">
                     <Grid HorizontalAlignment="Center">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
@@ -39,27 +38,15 @@
                     </Grid>
                 </StackPanel>
 
-                <StackPanel Grid.Row="3">
-                    <ItemsControl ItemsSource="{Binding ChapterImageURLs}">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <UniformGrid Margin="0,2.5,0,0" Columns="1" />
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <Grid HorizontalAlignment="Center">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                    </Grid.RowDefinitions>
-                                    <TextBlock Grid.Row="0" Text="{Binding}" Style="{DynamicResource MangaTitleDetail_Style}"/>
-                                    <Image Grid.Row="1" Source="{Binding}" Style="{StaticResource CoverImageDetail_Style}" />
-                                </Grid>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </StackPanel>
+                <ListView x:Name="listView" Grid.Row="2">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Width="Auto">
+                                
+                            </GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
             </Grid>
         </ScrollViewer>
     </Grid>

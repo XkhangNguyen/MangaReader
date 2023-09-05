@@ -24,8 +24,6 @@ namespace MangaReader.ViewModel
         private void OnChapterCreated(ChapterModel chapterModel)
         {
             ChapterModel = chapterModel;
-
-            //ChapterModel.ChapterImageURLs = await _mangaCrawler.CrawlChapterImgUrlAsync(chapterModel);
         }
 
         public override void Dispose()

@@ -54,7 +54,7 @@ namespace MangaReader.ViewModel
             if (_mangaCrawler != null)
             {
                 _mangaModels = new ObservableCollection<MangaModel>();
-                string filePath = @"C:\Users\Admin\Desktop\Projects\MangaReader\MangaScraper\results.json";
+                string filePath = @"C:\khang\MangaScraper\results.json";
                 foreach (var manga in JsonMangaReader.ReadJsonFile(filePath))
                 {
                     _mangaModels.Add(manga);

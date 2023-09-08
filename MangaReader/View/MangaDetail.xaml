@@ -10,7 +10,7 @@
         <utils:ChaptersToColumnCountConverter x:Key="ChaptersToColumnCountConverter" />
     </UserControl.Resources>
     <Grid Background="{DynamicResource BackgroundColor}">
-        <ScrollViewer VerticalScrollBarVisibility="Visible">
+        <ScrollViewer VerticalScrollBarVisibility="Visible"  utils:ScrollViewerMouseWheelBehavior.IncreaseScrollSpeed="True">
             <Grid DataContext="{Binding MangaModel}" MaxWidth="960">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>

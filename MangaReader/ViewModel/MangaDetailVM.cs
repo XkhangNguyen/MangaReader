@@ -1,13 +1,11 @@
 ﻿using MangaReader.Model;
 using MangaReader.Services;
 using MangaReader.Stores;
-using MangaReader.Ultilities;
-using System;
-using System.Collections.ObjectModel;
+using MangaReader.Utilities;
 
 namespace MangaReader.ViewModel
 {
-    internal class MangaDetailVM:Utilities.ViewModelBase
+    internal class MangaDetailVM:ViewModelBase
     {
         private MangaModel? _mangaModel;
 
@@ -15,8 +13,9 @@ namespace MangaReader.ViewModel
 
         public RelayCommand<ChapterModel> ShowChapterDetailCommand { get; }
 
-        private INavigationService? _navigation;
+        private IChapterIteratorService _chapterIterator;
 
+        private INavigationService? _navigation;
         public INavigationService? Navigation
         {
             get { return _navigation; }
@@ -26,13 +25,18 @@ namespace MangaReader.ViewModel
         public MangaModel? MangaModel
         {
             get { return _mangaModel; }
-            set { _mangaModel = value; OnPropertyChanged(); }
+            set { 
+                _mangaModel = value;
+                _chapterIterator.GetListChapters(_mangaModel?.Chapters);
+                OnPropertyChanged(); 
+            }
         }
 
-        public MangaDetailVM(INavigationService navigationService, MangaStore mangaStore)
+        public MangaDetailVM(INavigationService navigationService, MangaStore mangaStore, IChapterIteratorService chapterIterator)
         {
             Navigation = navigationService;
-
+            _chapterIterator = chapterIterator;
+            
             _mangaStore = mangaStore;
 
             _mangaStore.MangaCreated += OnMangaCreated;
@@ -42,9 +46,9 @@ namespace MangaReader.ViewModel
 
         private void ShowChapterDetail(ChapterModel? chapterModel)
         {
-            _mangaStore?.GetChapter(chapterModel);
-            Navigation?.NavigateTo<ReadSceneVM>();
-            }
+            int currentIndex = MangaModel.Chapters.IndexOf(chapterModel);
+            _chapterIterator.SetCurrentChapterIndex(currentIndex);
+        }
 
         private void OnMangaCreated(MangaModel mangaModel)
         {

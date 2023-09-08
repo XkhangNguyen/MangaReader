@@ -1,8 +1,13 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace MangaReader.Ultilities
+namespace MangaReader.Utilities
 {
+    public struct Unit
+    {
+        // This is an empty struct, so there are no fields or properties.
+        // It is used to represent a parameterless function.
+    }
     public class RelayCommand<T> : ICommand
     {
         private readonly Action<T?> _execute;
@@ -21,6 +26,11 @@ namespace MangaReader.Ultilities
 
         public bool CanExecute(object? parameter)
         {
+            if (typeof(T) == typeof(Unit) && parameter == null)
+            {
+                // Allow execution for parameterless function
+                return true;
+            }
             return _canExecute == null || _canExecute((T)parameter);
         }
 

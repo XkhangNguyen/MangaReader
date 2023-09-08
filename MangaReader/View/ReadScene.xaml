@@ -3,14 +3,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:MangaReader.View"
+             xmlns:utils ="clr-namespace:MangaReader.Utilities"
              mc:Ignorable="d" 
              d:DesignHeight="1080" d:DesignWidth="960"
              Style="{StaticResource Scene_Style}"
              >
-
+    
     <Grid  Background="{DynamicResource BackgroundColor}">
-        <ScrollViewer VerticalScrollBarVisibility="Visible">
+        <ScrollViewer VerticalScrollBarVisibility="Visible" utils:ScrollViewerMouseWheelBehavior.IncreaseScrollSpeed="True">
             <Grid DataContext="{Binding ChapterModel}" MaxWidth="960">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -32,21 +32,20 @@
                         <ComboBox Grid.Column="1">
 
                         </ComboBox>
-                        <Button Grid.Column="2">
-                            <TextBlock Text="Next"></TextBlock>
+                        <Button Grid.Column="2"
+                                 Command="{Binding DataContext.NextChapterCommand, 
+                                   RelativeSource={RelativeSource 
+                                   AncestorType=UserControl}}"
+                                >
+                            <TextBlock Text="Next" />
                         </Button>
                     </Grid>
                 </StackPanel>
 
-                <ListView x:Name="listView" Grid.Row="2">
-                    <ListView.View>
-                        <GridView>
-                            <GridViewColumn Width="Auto">
-                                
-                            </GridViewColumn>
-                        </GridView>
-                    </ListView.View>
-                </ListView>
+                <ItemsControl x:Name="listView" Grid.Row="2" HorizontalAlignment="Center">
+
+                </ItemsControl>
+
             </Grid>
         </ScrollViewer>
     </Grid>

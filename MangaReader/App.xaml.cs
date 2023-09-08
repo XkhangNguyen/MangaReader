@@ -35,7 +35,7 @@ namespace MangaReader
             services.AddSingleton<MainVM>();
             services.AddSingleton<OtakuSancCrawler>();
             services.AddSingleton<INavigationService, NavigationService>();
-
+            services.AddSingleton<IChapterIteratorService, ChapterIteratorService>();
             services.AddSingleton<Func<Type, ViewModelBase>>(serviceProvider => viewModelType => (ViewModelBase)serviceProvider.GetRequiredService(viewModelType));
 
             _serviceProvider = services.BuildServiceProvider();

@@ -38,12 +38,5 @@ namespace MangaReader.Stores
         {
             _mangasList = MangasList;            
         }
-
-        public event Action<ChapterModel>? ChapterCreated;
-
-        public void GetChapter(ChapterModel? chapter) {
-            if (chapter != null)
-                ChapterCreated?.Invoke(chapter);
-        }
     }
 }

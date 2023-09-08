@@ -1,13 +1,8 @@
 ﻿using MangaReader.Model;
 using MangaReader.Services;
 using MangaReader.Stores;
-using MangaReader.Ultilities;
 using MangaReader.Utilities;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace MangaReader.ViewModel

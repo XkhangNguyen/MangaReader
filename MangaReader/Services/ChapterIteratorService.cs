@@ -51,17 +51,6 @@ namespace MangaReader.Utilities
 
         public bool MoveToNextChapter()
         {
-            if (_currentIndex < _chapters.Count - 1)
-            {
-                _currentIndex++;
-                CurrentChapterChanged?.Invoke(this, EventArgs.Empty); // Trigger the event
-                return true;
-            }
-            return false;
-        }
-
-        public bool MoveToPreviousChapter()
-        {
             if (_currentIndex > 0)
             {
                 _currentIndex--;
@@ -70,6 +59,18 @@ namespace MangaReader.Utilities
                 return true;
             }
             return false;
+        }
+
+        public bool MoveToPreviousChapter()
+        {
+            if (_currentIndex < _chapters.Count - 1)
+            {
+                _currentIndex++;
+                CurrentChapterChanged?.Invoke(this, EventArgs.Empty); // Trigger the event
+                return true;
+            }
+            return false;
+            
         }
     }
 

@@ -15,18 +15,23 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Row="0" Text="{Binding MangaModel.MangaTitle}" Style="{StaticResource MangaTitleDetail_Style}" />
-
-                <StackPanel Grid.Row="1">
+                <TextBlock Grid.Row="1" Text="{Binding ChapterNumber}" Style="{StaticResource MangaTitleDetail_Style}" />
+                <StackPanel Grid.Row="2">
                     <Grid HorizontalAlignment="Center">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <Button Grid.Column="0">
+                        <Button Grid.Column="0"
+                                Command="{Binding DataContext.PreviousChapterCommand, 
+                                  RelativeSource={RelativeSource 
+                                  AncestorType=UserControl}}"
+                                >
                             <TextBlock Text="Prev"></TextBlock>
                         </Button>
                         <ComboBox Grid.Column="1">
@@ -42,7 +47,7 @@
                     </Grid>
                 </StackPanel>
 
-                <ItemsControl x:Name="listView" Grid.Row="2" HorizontalAlignment="Center">
+                <ItemsControl x:Name="listView" Grid.Row="3" HorizontalAlignment="Center">
 
                 </ItemsControl>
 

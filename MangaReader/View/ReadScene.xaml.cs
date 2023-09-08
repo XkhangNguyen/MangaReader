@@ -1,4 +1,5 @@
 ﻿using MangaReader.ViewModel;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -16,8 +17,8 @@ namespace MangaReader.View
     {
         private ObservableCollection<Image> loadedImages = new();
         private HttpClient httpClient = new HttpClient();
-        private CancellationTokenSource? cancellationTokenSource;
-
+        private SemaphoreSlim semaphore = new SemaphoreSlim(1);
+        private (CancellationTokenSource cts, Task task)? state;
         public ReadScene()
         {
             InitializeComponent();
@@ -31,22 +32,8 @@ namespace MangaReader.View
         {
             if (DataContext is ReadSceneVM viewModel)
             {
-                // Cancel any ongoing tasks
-                if (cancellationTokenSource != null)
-                {
-                    cancellationTokenSource.Cancel();
-                    cancellationTokenSource.Dispose();
-                }
-                cancellationTokenSource = new();
-
                 viewModel.PropertyChanged += ViewModel_PropertyChanged;
-                loadedImages.Clear();
-
-                foreach (var imageUrl in viewModel.ChapterModel?.ChapterImageURLs ?? new List<string>())
-                {
-                    // Start downloading and displaying images in the correct order
-                    await DownloadAndDisplayImage(imageUrl);
-                }
+                ViewModel_PropertyChanged(viewModel, new PropertyChangedEventArgs(nameof(viewModel.ChapterModel)));
             }
         }
 
@@ -55,38 +42,67 @@ namespace MangaReader.View
             // Check if the ChapterModel property changed
             if (e.PropertyName == "ChapterModel")
             {
-                if (DataContext is ReadSceneVM viewModel)
-                {
-                    // Cancel any ongoing tasks when ChapterModel changes
-                    if (cancellationTokenSource != null)
-                    {
-                        cancellationTokenSource.Cancel();
-                        cancellationTokenSource.Dispose();
-                    }
-
                     // Create a new CancellationTokenSource for this operation
-                    cancellationTokenSource = new();
-                    loadedImages.Clear();
+                    Task? task = null;
 
-                    // Re-populate images when ChapterModel changes
-                    foreach (var imageUrl in viewModel.ChapterModel?.ChapterImageURLs ?? new List<string>())
+                    await semaphore.WaitAsync();
+
+                    try
                     {
-                        await DownloadAndDisplayImage(imageUrl);
+                        if (state.HasValue)
+                        {
+                            state.Value.cts.Cancel();
+                            state.Value.cts.Dispose();
+
+                            try
+                            {
+                                await state.Value.task;
+                            }
+                            catch (OperationCanceledException)
+                            {
+
+                            }
+
+                            state = null;
+                        }
+
+                        var cts = new CancellationTokenSource();
+                        task = RestartLoadImagesAsync(cts.Token);
+                        state = (cts, task);
                     }
+                    finally
+                    {
+                        semaphore.Release();
+                    }
+
+                    try
+                    {
+                        await task;
+                    }
+                    catch (OperationCanceledException)
+                    {
+
+                    }
+                }
+        }
+
+        private async Task RestartLoadImagesAsync(CancellationToken token)
+        {
+            if (DataContext is ReadSceneVM viewModel)
+            {
+                loadedImages.Clear();
+                foreach (var imageUrl in viewModel.ChapterModel?.ChapterImageURLs ?? new List<string>())
+                {
+                    await DownloadAndDisplayImage(imageUrl, token);
                 }
             }
         }
 
-        private async Task DownloadAndDisplayImage(string imageUrl)
+        private async Task DownloadAndDisplayImage(string imageUrl, CancellationToken cancellationToken)
         {
             try
             {
-                byte[] imageBytes = await httpClient.GetByteArrayAsync(imageUrl, cancellationTokenSource.Token);
-                
-                if (cancellationTokenSource.IsCancellationRequested)
-                {
-                    return;
-                }
+                byte[] imageBytes = await httpClient.GetByteArrayAsync(imageUrl, cancellationToken);
 
                 using (MemoryStream imageStream = new MemoryStream(imageBytes))
                 {

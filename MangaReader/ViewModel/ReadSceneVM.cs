@@ -32,6 +32,7 @@ namespace MangaReader.ViewModel
             _chapterIterator = chapterIterator;
             _chapterIterator.CurrentChapterChanged += OnChapterCreated; // Subscribe to the event
             NextChapterCommand = new RelayCommand<ChapterModel>(_ => _chapterIterator.MoveToNextChapter());
+            PreviousChapterCommand = new RelayCommand<ChapterModel>(_ => _chapterIterator.MoveToPreviousChapter());
         }
 
         private void OnChapterCreated(object sender, EventArgs e)

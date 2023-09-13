@@ -1,10 +1,8 @@
 ﻿using MangaReader.Model;
-using MangaReader.Services;
-using MangaReader.Stores;
 using MangaReader.Utilities;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
-using System.Windows.Navigation;
+using System.Windows.Input;
 
 namespace MangaReader.ViewModel
 {

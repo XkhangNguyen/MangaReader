@@ -1,16 +1,17 @@
 ﻿using MangaReader.Model;
 using MangaReader.ViewModel;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media.Imaging;
 
 namespace MangaReader.View
@@ -93,6 +94,8 @@ namespace MangaReader.View
             if (DataContext is ReadSceneVM viewModel)
             {
                 comboBox.SelectedItem = viewModel.ChapterModel;
+                scroll.ScrollToVerticalOffset(0);
+                scroll.Focus();
                 loadedImages.Clear();
                 foreach (var imageUrl in viewModel.ChapterModel?.ChapterImageURLs ?? new List<string>())
                 {
@@ -167,5 +170,40 @@ namespace MangaReader.View
             }
         }
 
+        private void UserControl_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (DataContext is ReadSceneVM viewModel)
+            {
+                if (e.Key == Key.Left)
+                {
+                    viewModel.PreviousChapterCommand.Execute(null);
+                    e.Handled = true; // Mark the event as handled to prevent other keyboard shortcuts from interfering
+                }
+
+                if (e.Key == Key.Right)
+                {
+                    viewModel.NextChapterCommand.Execute(null);
+                    e.Handled = true; // Mark the event as handled to prevent other keyboard shortcuts from interfering
+                }
+            }
+        }
+
+        private void UserControl_PreviewButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (DataContext is ReadSceneVM viewModel)
+            {
+                if (e.ChangedButton == MouseButton.XButton1)
+                {
+                    viewModel.PreviousChapterCommand.Execute(null);
+                    e.Handled = true; // Mark the event as handled to prevent other keyboard shortcuts from interfering
+                }
+
+                if (e.ChangedButton == MouseButton.XButton2)
+                {
+                    viewModel.NextChapterCommand.Execute(null);
+                    e.Handled = true; // Mark the event as handled to prevent other keyboard shortcuts from interfering
+                }
+            }
+        }
     }
 }

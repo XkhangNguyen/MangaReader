@@ -6,6 +6,8 @@
              xmlns:utils ="clr-namespace:MangaReader.Utilities"
              mc:Ignorable="d" 
              Style="{StaticResource Scene_Style}"
+             PreviewKeyUp="UserControl_PreviewKeyDown"
+             PreviewMouseDown="UserControl_PreviewButtonDown"
              >
     
     <Grid  Background="{DynamicResource BackgroundColor}">
@@ -42,7 +44,7 @@
                 </Button>
             </Grid>
         </StackPanel>
-        <ScrollViewer ScrollChanged="ScrollView_OnScrollChanged" Grid.Row="1" VerticalScrollBarVisibility="Visible" utils:ScrollViewerMouseWheelBehavior.IncreaseScrollSpeed="True">
+        <ScrollViewer x:Name="scroll" ScrollChanged="ScrollView_OnScrollChanged" Grid.Row="1" VerticalScrollBarVisibility="Visible" utils:ScrollViewerMouseWheelBehavior.IncreaseScrollSpeed="True">
             <Grid DataContext="{Binding ChapterModel}" MaxWidth="960">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>

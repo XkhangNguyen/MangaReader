@@ -5,49 +5,53 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:utils ="clr-namespace:MangaReader.Utilities"
              mc:Ignorable="d" 
-             d:DesignHeight="1080" d:DesignWidth="960"
              Style="{StaticResource Scene_Style}"
              >
     
     <Grid  Background="{DynamicResource BackgroundColor}">
-        <ScrollViewer VerticalScrollBarVisibility="Visible" utils:ScrollViewerMouseWheelBehavior.IncreaseScrollSpeed="True">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <StackPanel x:Name="buttonsPanel" Margin="100" Grid.Row="1" Panel.ZIndex="9999">
+            <Grid HorizontalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0"
+                 Command="{Binding DataContext.PreviousChapterCommand, 
+                   RelativeSource={RelativeSource 
+                   AncestorType=UserControl}}"
+                 >
+                    <TextBlock Margin="10 5" Text="Prev"></TextBlock>
+                </Button>
+                <ComboBox Margin="10 0" VerticalContentAlignment="Center" x:Name="comboBox" Grid.Column="1" 
+                   ItemsSource="{Binding ChapterModel.MangaModel.Chapters}" 
+                   DisplayMemberPath="ChapterNumber" 
+                   SelectionChanged="ComboBox_SelectionChanged"
+                   />
+                <Button Grid.Column="2"
+                  Command="{Binding DataContext.NextChapterCommand, 
+                    RelativeSource={RelativeSource 
+                    AncestorType=UserControl}}"
+                 >
+                    <TextBlock Margin="10 5" Text="Next" />
+                </Button>
+            </Grid>
+        </StackPanel>
+        <ScrollViewer ScrollChanged="ScrollView_OnScrollChanged" Grid.Row="1" VerticalScrollBarVisibility="Visible" utils:ScrollViewerMouseWheelBehavior.IncreaseScrollSpeed="True">
             <Grid DataContext="{Binding ChapterModel}" MaxWidth="960">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0" Text="{Binding MangaModel.MangaTitle}" Style="{StaticResource MangaTitleDetail_Style}" />
-                <TextBlock Grid.Row="1" Text="{Binding ChapterNumber}" Style="{StaticResource MangaTitleDetail_Style}" />
-                <StackPanel Grid.Row="2">
-                    <Grid HorizontalAlignment="Center">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-                        <Button Grid.Column="0"
-                                Command="{Binding DataContext.PreviousChapterCommand, 
-                                  RelativeSource={RelativeSource 
-                                  AncestorType=UserControl}}"
-                                >
-                            <TextBlock Text="Prev"></TextBlock>
-                        </Button>
-                        <ComboBox Grid.Column="1">
-
-                        </ComboBox>
-                        <Button Grid.Column="2"
-                                 Command="{Binding DataContext.NextChapterCommand, 
-                                   RelativeSource={RelativeSource 
-                                   AncestorType=UserControl}}"
-                                >
-                            <TextBlock Text="Next" />
-                        </Button>
-                    </Grid>
-                </StackPanel>
-
-                <ItemsControl x:Name="listView" Grid.Row="3" HorizontalAlignment="Center">
+                <TextBlock Margin="0 10" Grid.Row="0" Text="{Binding MangaModel.MangaTitle}" Style="{StaticResource MangaTitleDetail_Style}" />
+                <TextBlock Margin="0 0 0 80" Grid.Row="1" Text="{Binding ChapterNumber}" Style="{StaticResource MangaTitleDetail_Style}" />
+                <ItemsControl x:Name="listView" Grid.Row="2" HorizontalAlignment="Center">
 
                 </ItemsControl>
 

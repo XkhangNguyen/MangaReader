@@ -1,4 +1,5 @@
-﻿using MangaReader.ViewModel;
+﻿using MangaReader.Model;
+using MangaReader.ViewModel;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,7 @@ using System.IO;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 
@@ -17,6 +19,7 @@ namespace MangaReader.View
     {
         private ObservableCollection<Image> loadedImages = new();
         private HttpClient httpClient = new HttpClient();
+
         private SemaphoreSlim semaphore = new SemaphoreSlim(1);
         private (CancellationTokenSource cts, Task task)? state;
         public ReadScene()
@@ -28,7 +31,7 @@ namespace MangaReader.View
             listView.ItemsSource = loadedImages;
         }
 
-        private async void ReadScene_DataContextChanged(object sender, System.Windows.DependencyPropertyChangedEventArgs e)
+        private void ReadScene_DataContextChanged(object sender, System.Windows.DependencyPropertyChangedEventArgs e)
         {
             if (DataContext is ReadSceneVM viewModel)
             {
@@ -42,7 +45,6 @@ namespace MangaReader.View
             // Check if the ChapterModel property changed
             if (e.PropertyName == "ChapterModel")
             {
-                    // Create a new CancellationTokenSource for this operation
                     Task? task = null;
 
                     await semaphore.WaitAsync();
@@ -90,6 +92,7 @@ namespace MangaReader.View
         {
             if (DataContext is ReadSceneVM viewModel)
             {
+                comboBox.SelectedItem = viewModel.ChapterModel;
                 loadedImages.Clear();
                 foreach (var imageUrl in viewModel.ChapterModel?.ChapterImageURLs ?? new List<string>())
                 {
@@ -137,5 +140,32 @@ namespace MangaReader.View
                 // Operation was canceled (e.g., when ChapterModel changes)
             }
         }
+
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (DataContext is ReadSceneVM viewModel)
+            {
+                if (comboBox.SelectedItem is ChapterModel selectedChapter)
+                {
+                    int currentIndex = selectedChapter.MangaModel.Chapters.IndexOf(selectedChapter);
+                    viewModel.ChapterIterator.SetCurrentChapterIndex(currentIndex);
+                }
+            }
+        }
+
+        private void ScrollView_OnScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+            if (e.VerticalChange != 0)
+            {
+                // Synchronize the ComboBox's Y position with the ScrollViewer's vertical offset
+                buttonsPanel.Margin = new Thickness(0, 10 , 0, 0);
+            }
+
+            if(e.VerticalOffset == 0)
+            {
+                buttonsPanel.Margin = new Thickness(0, 100, 0, 0);
+            }
+        }
+
     }
 }

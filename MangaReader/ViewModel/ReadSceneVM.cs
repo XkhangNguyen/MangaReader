@@ -11,17 +11,16 @@ namespace MangaReader.ViewModel
     public class ReadSceneVM : ViewModelBase
     {
         private IChapterIteratorService _chapterIterator;
+        public IChapterIteratorService ChapterIterator
+        {
+            get { return _chapterIterator; }
+        }
 
         private ChapterModel? _chapterModel;
-        int counter = 0;
         public ChapterModel? ChapterModel
         {
             get { return _chapterModel; }
-            set 
-            { 
-                _chapterModel = value;
-                OnPropertyChanged(); 
-            }
+            private set { _chapterModel = value; OnPropertyChanged(); }
         }
 
         public RelayCommand<ChapterModel> NextChapterCommand { get; }

@@ -45,7 +45,7 @@ namespace MangaReader.Utilities
         public void SetCurrentChapterIndex(int index)
         {
             _currentIndex = index;
-            CurrentChapterChanged?.Invoke(this, EventArgs.Empty); // Trigger the event
+            CurrentChapterChanged?.Invoke(this, EventArgs.Empty);
             Navigation?.NavigateTo<ReadSceneVM>();
         }
 
@@ -54,7 +54,7 @@ namespace MangaReader.Utilities
             if (_currentIndex > 0)
             {
                 _currentIndex--;
-                CurrentChapterChanged?.Invoke(this, EventArgs.Empty); // Trigger the event
+                CurrentChapterChanged?.Invoke(this, EventArgs.Empty);
                 Navigation?.NavigateTo<ReadSceneVM>();
                 return true;
             }

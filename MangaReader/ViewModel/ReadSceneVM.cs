@@ -1,4 +1,5 @@
-﻿using MangaReader.Model;
+﻿using MangaReader.Models;
+using MangaReader.Services;
 using MangaReader.Utilities;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
@@ -8,33 +9,40 @@ namespace MangaReader.ViewModel
 {
     public class ReadSceneVM : ViewModelBase
     {
+        private MangaService _mangaService;
+
         private IChapterIteratorService _chapterIterator;
         public IChapterIteratorService ChapterIterator
         {
             get { return _chapterIterator; }
         }
 
-        private ChapterModel? _chapterModel;
-        public ChapterModel? ChapterModel
+        private Chapter? _chapter;
+        public Chapter? Chapter
         {
-            get { return _chapterModel; }
-            private set { _chapterModel = value; OnPropertyChanged(); }
+            get { return _chapter; }
+            private set { _chapter = value; OnPropertyChanged(); }
         }
 
-        public RelayCommand<ChapterModel> NextChapterCommand { get; }
-        public RelayCommand<ChapterModel?> PreviousChapterCommand { get; }
+        public RelayCommand<Chapter> NextChapterCommand { get; }
+        public RelayCommand<Chapter?> PreviousChapterCommand { get; }
 
-        public ReadSceneVM(IChapterIteratorService chapterIterator) 
+        public ReadSceneVM(IChapterIteratorService chapterIterator, MangaService mangaService) 
         {
             _chapterIterator = chapterIterator;
-            _chapterIterator.CurrentChapterChanged += OnChapterCreated; // Subscribe to the event
-            NextChapterCommand = new RelayCommand<ChapterModel>(_ => _chapterIterator.MoveToNextChapter());
-            PreviousChapterCommand = new RelayCommand<ChapterModel>(_ => _chapterIterator.MoveToPreviousChapter());
+            _chapterIterator.CurrentChapterChanged += OnChapterCreated;
+
+            _mangaService = mangaService;
+
+            NextChapterCommand = new RelayCommand<Chapter>(_ => _chapterIterator.MoveToNextChapter());
+            PreviousChapterCommand = new RelayCommand<Chapter>(_ => _chapterIterator.MoveToPreviousChapter());
         }
 
-        private void OnChapterCreated(object sender, EventArgs e)
+        private async void OnChapterCreated(object sender, EventArgs e)
         {
-            ChapterModel = _chapterIterator.CurrentChapter;
+            Chapter = _chapterIterator.CurrentChapter;
+
+            Chapter.ChapterImages = await _mangaService.GetChapterImagesOfChapter(Chapter);
         }
     }
 }

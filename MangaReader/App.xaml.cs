@@ -1,7 +1,9 @@
-﻿using MangaReader.Services;
+﻿using MangaReader.Models;
+using MangaReader.Services;
 using MangaReader.Stores;
 using MangaReader.Utilities;
 using MangaReader.ViewModel;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Win32;
 using System;
@@ -15,6 +17,7 @@ namespace MangaReader
     public partial class App : Application
     {
         private readonly ServiceProvider _serviceProvider;
+        public IConfiguration Configuration { get; private set; }
 
         public ServiceProvider ServiceProvider { get { return _serviceProvider; } }
 
@@ -22,21 +25,23 @@ namespace MangaReader
         {
             IServiceCollection services = new ServiceCollection();
 
+
             services.AddSingleton(provider => new MainWindow
             {
                 DataContext = provider.GetRequiredService<MainVM>()
             });
 
-            services.AddSingleton<MangasDisplayVM>();
-            services.AddSingleton<MangaDetailVM>();
+            services.AddSingleton<MangaDbContext>();
+            services.AddSingleton<MangaService>();
             services.AddSingleton<MangaStore>();
-            services.AddSingleton<LoadSceneVM>();
-            services.AddSingleton<ReadSceneVM>();
-            services.AddSingleton<MainVM>();
-            services.AddSingleton<OtakuSancCrawler>();
             services.AddSingleton<INavigationService, NavigationService>();
             services.AddSingleton<IChapterIteratorService, ChapterIteratorService>();
             services.AddSingleton<Func<Type, ViewModelBase>>(serviceProvider => viewModelType => (ViewModelBase)serviceProvider.GetRequiredService(viewModelType));
+            services.AddSingleton<MainVM>();
+            services.AddSingleton<LoadSceneVM>();
+            services.AddSingleton<MangasDisplayVM>();
+            services.AddSingleton<MangaDetailVM>();
+            services.AddSingleton<ReadSceneVM>();
 
             _serviceProvider = services.BuildServiceProvider();
         }
@@ -60,7 +65,6 @@ namespace MangaReader
             var mainWindow = _serviceProvider.GetRequiredService<MainWindow>();
             mainWindow.Show();
 
-            
             base.OnStartup(e);
         }
 

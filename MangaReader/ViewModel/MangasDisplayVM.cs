@@ -1,4 +1,4 @@
-﻿using MangaReader.Model;
+﻿using MangaReader.Models;
 using System.Collections.ObjectModel;
 using MangaReader.Stores;
 using MangaReader.Utilities;
@@ -6,10 +6,10 @@ using MangaReader.Services;
 
 namespace MangaReader.ViewModel
 {
-    internal class MangasDisplayVM : Utilities.ViewModelBase
+    internal class MangasDisplayVM : ViewModelBase
     {
         private readonly MangaStore _mangaStore;
-        public RelayCommand<MangaModel> ShowMangaDetailCommand { get; }
+        public RelayCommand<Manga> ShowMangaDetailCommand { get; }
 
         private INavigationService? _navigation;
 
@@ -19,13 +19,13 @@ namespace MangaReader.ViewModel
             set { _navigation = value; OnPropertyChanged(); }
         }
 
-        private ObservableCollection<MangaModel>? _mangaModels;
-        public ObservableCollection<MangaModel>? MangaModels
+        private ObservableCollection<Manga>? _mangas;
+        public ObservableCollection<Manga>? Mangas
         {
-            get { return _mangaModels; }
+            get { return _mangas; }
             set
             {
-                _mangaModels = value;
+                _mangas = value;
                 OnPropertyChanged();
             }
         }
@@ -38,13 +38,13 @@ namespace MangaReader.ViewModel
 
             _mangaStore.MangasListCreated += OnMangasListCreated;
 
-            ShowMangaDetailCommand = new RelayCommand<MangaModel>(ShowMangaDetail);
+            ShowMangaDetailCommand = new RelayCommand<Manga>(ShowMangaDetail);
 
         }
 
-        private void OnMangasListCreated(ObservableCollection<MangaModel> mangaModels)
+        private void OnMangasListCreated(ObservableCollection<Manga> mangaModels)
         {
-           MangaModels = mangaModels;
+           Mangas = mangaModels;
         }
 
         public override void Dispose()
@@ -54,7 +54,7 @@ namespace MangaReader.ViewModel
             base.Dispose();
         }
 
-        private void ShowMangaDetail(MangaModel? manga)
+        private void ShowMangaDetail(Manga? manga)
         {
             _mangaStore.GetManga(manga);
 

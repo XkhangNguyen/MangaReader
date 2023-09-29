@@ -1,4 +1,4 @@
-﻿using MangaReader.Model;
+﻿using MangaReader.Models;
 using MangaReader.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -37,14 +37,14 @@ namespace MangaReader.View
             if (DataContext is ReadSceneVM viewModel)
             {
                 viewModel.PropertyChanged += ViewModel_PropertyChanged;
-                ViewModel_PropertyChanged(viewModel, new PropertyChangedEventArgs(nameof(viewModel.ChapterModel)));
+                ViewModel_PropertyChanged(viewModel, new PropertyChangedEventArgs(nameof(viewModel.Chapter)));
             }
         }
 
         private async void ViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             // Check if the ChapterModel property changed
-            if (e.PropertyName == "ChapterModel")
+            if (e.PropertyName == "Chapter")
             {
                     Task? task = null;
 
@@ -93,13 +93,13 @@ namespace MangaReader.View
         {
             if (DataContext is ReadSceneVM viewModel)
             {
-                comboBox.SelectedItem = viewModel.ChapterModel;
+                comboBox.SelectedItem = viewModel.Chapter;
                 scroll.ScrollToVerticalOffset(0);
                 scroll.Focus();
                 loadedImages.Clear();
-                foreach (var imageUrl in viewModel.ChapterModel?.ChapterImageURLs ?? new List<string>())
+                foreach (var imageUrl in viewModel.Chapter?.ChapterImages ?? new List<ChapterImage>())
                 {
-                    await DownloadAndDisplayImage(imageUrl, token);
+                    await DownloadAndDisplayImage(imageUrl.ChapterImageUrl, token);
                 }
             }
         }
@@ -148,10 +148,11 @@ namespace MangaReader.View
         {
             if (DataContext is ReadSceneVM viewModel)
             {
-                if (comboBox.SelectedItem is ChapterModel selectedChapter)
+                if (comboBox.SelectedItem is Chapter selectedChapter)
                 {
-                    int currentIndex = selectedChapter.MangaModel.Chapters.IndexOf(selectedChapter);
-                    viewModel.ChapterIterator.SetCurrentChapterIndex(currentIndex);
+                    selectedChapter.Manga = viewModel.ChapterIterator.CurrentManga;
+                    int currentIndex = selectedChapter.Manga.Chapters.IndexOf(selectedChapter);
+                    viewModel.ChapterIterator.SetCurrentChapterIndex(currentIndex, selectedChapter.Manga);
                 }
             }
         }

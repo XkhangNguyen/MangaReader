@@ -1,4 +1,5 @@
 ﻿using MangaReader.Model;
+using MangaReader.Models;
 using MangaReader.Services;
 using MangaReader.Stores;
 using MangaReader.Utilities;
@@ -7,11 +8,11 @@ namespace MangaReader.ViewModel
 {
     internal class MangaDetailVM:ViewModelBase
     {
-        private MangaModel? _mangaModel;
+        private Manga? _manga;
 
         private readonly MangaStore _mangaStore;
 
-        public RelayCommand<ChapterModel> ShowChapterDetailCommand { get; }
+        public RelayCommand<Chapter> ShowChapterDetailCommand { get; }
 
         private IChapterIteratorService _chapterIterator;
 
@@ -22,12 +23,12 @@ namespace MangaReader.ViewModel
             set { _navigation = value; OnPropertyChanged(); }
         }
 
-        public MangaModel? MangaModel
+        public Manga? Manga
         {
-            get { return _mangaModel; }
+            get { return _manga; }
             set { 
-                _mangaModel = value;
-                _chapterIterator.GetListChapters(_mangaModel?.Chapters);
+                _manga = value;
+                _chapterIterator.GetListChapters(_manga?.Chapters);
                 OnPropertyChanged(); 
             }
         }
@@ -41,18 +42,18 @@ namespace MangaReader.ViewModel
 
             _mangaStore.MangaCreated += OnMangaCreated;
 
-            ShowChapterDetailCommand = new RelayCommand<ChapterModel>(ShowChapterDetail);
+            ShowChapterDetailCommand = new RelayCommand<Chapter>(ShowChapterDetail);
         }
 
-        private void ShowChapterDetail(ChapterModel? chapterModel)
+        private void ShowChapterDetail(Chapter? chapter)
         {
-            int currentIndex = MangaModel.Chapters.IndexOf(chapterModel);
-            _chapterIterator.SetCurrentChapterIndex(currentIndex);
+            int currentIndex = Manga.Chapters.IndexOf(chapter);
+            _chapterIterator.SetCurrentChapterIndex(currentIndex, Manga);
         }
 
-        private void OnMangaCreated(MangaModel mangaModel)
+        private void OnMangaCreated(Manga mangaModel)
         {
-            MangaModel = mangaModel;
+            Manga = mangaModel;
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using HtmlAgilityPack;
-using MangaReader.Model;
+﻿using MangaReader.Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

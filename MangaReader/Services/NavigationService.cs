@@ -1,7 +1,5 @@
 ﻿using MangaReader.Utilities;
 using System;
-using System.Collections.Specialized;
-using System.ComponentModel;
 
 namespace MangaReader.Services
 {

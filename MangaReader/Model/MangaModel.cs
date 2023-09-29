@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Newtonsoft.Json;
 
 namespace MangaReader.Model
@@ -24,15 +25,10 @@ namespace MangaReader.Model
             {
                 string jsonText = File.ReadAllText(filePath);
 
-                List<MangaModel>? mangaList = JsonConvert.DeserializeObject<List<MangaModel>>(jsonText);
-                foreach(var manga in mangaList)
-                {
-                        
-                    foreach(var chapter in manga.Chapters)
-                    {
-                        chapter.MangaModel = manga;
-                    }
-                }
+                Dictionary<string, MangaModel>? mangaDictionary = JsonConvert.DeserializeObject<Dictionary<string, MangaModel>>(jsonText);
+
+                List<MangaModel> mangaList = mangaDictionary.Values.ToList();
+
                 return mangaList;
             }
             catch (Exception ex)

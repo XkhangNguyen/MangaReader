@@ -11,7 +11,7 @@
     </UserControl.Resources>
     <Grid Background="{DynamicResource BackgroundColor}">
         <ScrollViewer VerticalScrollBarVisibility="Visible"  utils:ScrollViewerMouseWheelBehavior.IncreaseScrollSpeed="True">
-            <Grid DataContext="{Binding Manga}" MaxWidth="960">
+            <Grid DataContext="{Binding MangaModel}" MaxWidth="960">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
@@ -20,7 +20,7 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <TextBlock Grid.Row="0" Text="{Binding Title}" Style="{StaticResource MangaTitleDetail_Style}" />
+                <TextBlock Grid.Row="0" Text="{Binding MangaTitle}" Style="{StaticResource MangaTitleDetail_Style}" />
                 <Image Grid.Row="1" Source="{Binding CoverImageUrl}" Style="{StaticResource CoverImageDetail_Style}" />
                 <Grid Grid.Row="2" Margin="10 20">
                     <Grid.RowDefinitions>
@@ -31,7 +31,7 @@
                         <TextBlock Text="SUMMARY" Foreground="{DynamicResource MangaTitle}" FontWeight="SemiBold" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" />
                     </Border>
                     <Border Grid.Row="1" BorderBrush="{DynamicResource Border_UI}" BorderThickness="1, 0, 1, 1" Padding="10">
-                        <TextBlock Text="{Binding Description}" FontSize="17" Foreground="{DynamicResource ChapterNumber}" TextWrapping="Wrap" Margin="5"/>
+                        <TextBlock Text="{Binding MangaDescription}" FontSize="17" Foreground="{DynamicResource ChapterNumber}" TextWrapping="Wrap" Margin="5"/>
                     </Border>
                 </Grid>
                 <StackPanel Grid.Row="3">

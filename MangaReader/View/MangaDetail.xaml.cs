@@ -30,7 +30,7 @@ namespace MangaReader.View
         {
             if (sender is Image coverImage && coverImage.DataContext is MangaModel manga)
             {
-                coverImage.Source = new BitmapImage(new Uri("https:" + manga.CoverImageURL));
+                coverImage.Source = new BitmapImage(new Uri("https:" + manga.CoverImageUrl));
             }
         }
     }

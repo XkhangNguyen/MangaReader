@@ -4,6 +4,7 @@ namespace MangaReader.Model
 {
     public class ChapterModel
     {
+        public int Id { get; set; }
         public MangaModel? MangaModel { get; set; }
         public string ChapterNumber { get; set; } = string.Empty;
         public string ChapterLink { get; set; } = string.Empty;

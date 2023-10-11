@@ -1,18 +1,20 @@
 ﻿using MangaReader.Model;
-using MangaReader.Models;
 using MangaReader.Services;
 using MangaReader.Stores;
 using MangaReader.Utilities;
-using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Windows.Input;
+using System.Net.Http;
+using Newtonsoft.Json;
 
 namespace MangaReader.ViewModel
 {
     public class MainVM : ViewModelBase
     {
         private MangaStore? _mangaStore;
+
+        private readonly HttpClient _httpClient = new HttpClient();
+
 
         //private Timer _timer;
 
@@ -53,8 +55,10 @@ namespace MangaReader.ViewModel
 
         private async void LoadMangaDataAsync()
         {
-            
-            _mangaStore?.GetMangas(await _mangaService.GetAllMangas());
+
+            var MangaData = await _mangaService.GetAllMangas();
+
+            _mangaStore?.FetchMangasData(MangaData!);
 
             Navigation?.NavigateTo<MangasDisplayVM>();
         }

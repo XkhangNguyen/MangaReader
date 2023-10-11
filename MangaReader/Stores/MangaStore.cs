@@ -1,23 +1,21 @@
 ﻿using MangaReader.Model;
 using System;
 using System.Collections.ObjectModel;
-using MangaReader.Models;
-
 
 namespace MangaReader.Stores
 {
     public class MangaStore
     {
-        public event Action<Manga>? MangaCreated;
-        public void GetManga(Manga? mangaModel)
+        public event Action<MangaModel>? MangaCreated;
+        public void GetManga(MangaModel? mangaModel)
         {
             if (mangaModel != null)
                 MangaCreated?.Invoke(mangaModel);
         }
 
-        private ObservableCollection<Manga>? _mangasList;
+        private ObservableCollection<MangaModel>? _mangasList;
 
-        public event Action<ObservableCollection<Manga>>? MangasListCreated
+        public event Action<ObservableCollection<MangaModel>>? MangasListCreated
         {
             add
             {
@@ -34,9 +32,9 @@ namespace MangaReader.Stores
             }
         }
 
-        private event Action<ObservableCollection<Manga>>? OnMangasListCreated;
+        private event Action<ObservableCollection<MangaModel>>? OnMangasListCreated;
 
-        public void GetMangas(ObservableCollection<Manga> MangasList)
+        public void FetchMangasData(ObservableCollection<MangaModel> MangasList)
         {
             _mangasList = MangasList;            
         }

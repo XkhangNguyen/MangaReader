@@ -31,7 +31,7 @@
                     <TextBlock Margin="10 5" Text="Prev"></TextBlock>
                 </Button>
                 <ComboBox Margin="10 0" VerticalContentAlignment="Center" x:Name="comboBox" Grid.Column="1" 
-                   ItemsSource="{Binding Chapter.Manga.Chapters}" 
+                   ItemsSource="{Binding ChapterModel.MangaModel.Chapters}" 
                    DisplayMemberPath="ChapterNumber" 
                    SelectionChanged="ComboBox_SelectionChanged"
                    />
@@ -45,13 +45,13 @@
             </Grid>
         </StackPanel>
         <ScrollViewer x:Name="scroll" ScrollChanged="ScrollView_OnScrollChanged" Grid.Row="1" VerticalScrollBarVisibility="Visible" utils:ScrollViewerMouseWheelBehavior.IncreaseScrollSpeed="True">
-            <Grid DataContext="{Binding Chapter}" MaxWidth="960">
+            <Grid DataContext="{Binding ChapterModel}" MaxWidth="960">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <TextBlock Margin="0 10" Grid.Row="0" Text="{Binding Manga.Title}" Style="{StaticResource MangaTitleDetail_Style}" />
+                <TextBlock Margin="0 10" Grid.Row="0" Text="{Binding MangaModel.MangaTitle}" Style="{StaticResource MangaTitleDetail_Style}" />
                 <TextBlock Margin="0 0 0 80" Grid.Row="1" Text="{Binding ChapterNumber}" Style="{StaticResource MangaTitleDetail_Style}" />
                 <ItemsControl x:Name="listView" Grid.Row="2" HorizontalAlignment="Center">
 

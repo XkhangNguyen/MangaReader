@@ -1,4 +1,4 @@
-﻿using MangaReader.Models;
+﻿using MangaReader.Model;
 using MangaReader.Services;
 using MangaReader.ViewModel;
 using System;
@@ -10,18 +10,18 @@ namespace MangaReader.Utilities
     public interface IChapterIteratorService
     {
         event EventHandler CurrentChapterChanged;
-        Chapter CurrentChapter { get; }
-        Manga CurrentManga { get; }
-        public void GetListChapters(List<Chapter> chapters);
-        public void SetCurrentChapterIndex(int index, Manga mangaRef);
+        ChapterModel CurrentChapter { get; }
+        MangaModel CurrentManga { get; }
+        public void GetListChapters(List<ChapterModel> chapters);
+        public void SetCurrentChapterIndex(int index, MangaModel mangaRef);
         public bool MoveToNextChapter();
         public bool MoveToPreviousChapter();
     }
     public class ChapterIteratorService: IChapterIteratorService
     {
-        private List<Chapter>? _chapters;
+        private List<ChapterModel>? _chapters;
 
-        private Manga currentManga;
+        private MangaModel currentManga;
 
         private int _currentIndex;
         
@@ -38,20 +38,20 @@ namespace MangaReader.Utilities
             Navigation = navigationService;
         }
 
-        public void GetListChapters(List<Chapter> chapters)
+        public void GetListChapters(List<ChapterModel> chapters)
         {
             _chapters = chapters;
             _currentIndex = 0;
         }
 
-        public Chapter CurrentChapter => _chapters[_currentIndex];
-        public Manga CurrentManga => currentManga;
+        public ChapterModel CurrentChapter => _chapters[_currentIndex];
+        public MangaModel CurrentManga => currentManga;
 
-        public void SetCurrentChapterIndex(int index, Manga mangaRef)
+        public void SetCurrentChapterIndex(int index, MangaModel mangaRef)
         {
             _currentIndex = index;
             currentManga = mangaRef;
-            _chapters[_currentIndex].Manga = currentManga;
+            _chapters[_currentIndex].MangaModel = currentManga;
             CurrentChapterChanged?.Invoke(this, EventArgs.Empty);
             Navigation?.NavigateTo<ReadSceneVM>();
         }
@@ -61,7 +61,7 @@ namespace MangaReader.Utilities
             if (_currentIndex > 0)
             {
                 _currentIndex--;
-                _chapters[_currentIndex].Manga = currentManga;
+                _chapters[_currentIndex].MangaModel = currentManga;
                 CurrentChapterChanged?.Invoke(this, EventArgs.Empty);
                 Navigation?.NavigateTo<ReadSceneVM>();
                 return true;
@@ -74,7 +74,7 @@ namespace MangaReader.Utilities
             if (_currentIndex < _chapters.Count - 1)
             {
                 _currentIndex++;
-                _chapters[_currentIndex].Manga = currentManga;
+                _chapters[_currentIndex].MangaModel = currentManga;
                 CurrentChapterChanged?.Invoke(this, EventArgs.Empty); // Trigger the event
                 return true;
             }

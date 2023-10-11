@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Data;
-using MangaReader.Models;
+using MangaReader.Model;
 
 namespace MangaReader.Utilities
 {
@@ -12,7 +12,7 @@ namespace MangaReader.Utilities
         public object? Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             
-            if (value is List<Chapter> chapters)
+            if (value is List<ChapterModel> chapters)
             {
                 int maxChaptersToShow = 3;
                 return chapters.Take(maxChaptersToShow).ToList();

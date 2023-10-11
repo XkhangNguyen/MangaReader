@@ -1,10 +1,9 @@
-﻿using MangaReader.Models;
+﻿using MangaReader.Model;
 using MangaReader.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
 using System.Threading;
@@ -37,14 +36,14 @@ namespace MangaReader.View
             if (DataContext is ReadSceneVM viewModel)
             {
                 viewModel.PropertyChanged += ViewModel_PropertyChanged;
-                ViewModel_PropertyChanged(viewModel, new PropertyChangedEventArgs(nameof(viewModel.Chapter)));
+                ViewModel_PropertyChanged(viewModel, new PropertyChangedEventArgs(nameof(viewModel.ChapterModel)));
             }
         }
 
         private async void ViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             // Check if the ChapterModel property changed
-            if (e.PropertyName == "Chapter")
+            if (e.PropertyName == "ChapterModel")
             {
                     Task? task = null;
 
@@ -93,13 +92,13 @@ namespace MangaReader.View
         {
             if (DataContext is ReadSceneVM viewModel)
             {
-                comboBox.SelectedItem = viewModel.Chapter;
+                comboBox.SelectedItem = viewModel.ChapterModel;
                 scroll.ScrollToVerticalOffset(0);
                 scroll.Focus();
                 loadedImages.Clear();
-                foreach (var imageUrl in viewModel.Chapter?.ChapterImages ?? new List<ChapterImage>())
+                foreach (var imageUrl in viewModel.ChapterModel?.ChapterImageURLs ?? new List<string>())
                 {
-                    await DownloadAndDisplayImage(imageUrl.ChapterImageUrl, token);
+                    await DownloadAndDisplayImage(imageUrl, token);
                 }
             }
         }
@@ -148,11 +147,11 @@ namespace MangaReader.View
         {
             if (DataContext is ReadSceneVM viewModel)
             {
-                if (comboBox.SelectedItem is Chapter selectedChapter)
+                if (comboBox.SelectedItem is ChapterModel selectedChapter)
                 {
-                    selectedChapter.Manga = viewModel.ChapterIterator.CurrentManga;
-                    int currentIndex = selectedChapter.Manga.Chapters.IndexOf(selectedChapter);
-                    viewModel.ChapterIterator.SetCurrentChapterIndex(currentIndex, selectedChapter.Manga);
+                    selectedChapter.MangaModel = viewModel.ChapterIterator.CurrentManga;
+                    int currentIndex = selectedChapter.MangaModel.Chapters!.IndexOf(selectedChapter);
+                    viewModel.ChapterIterator.SetCurrentChapterIndex(currentIndex, selectedChapter.MangaModel);
                 }
             }
         }

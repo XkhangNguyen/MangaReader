@@ -1,5 +1,4 @@
-﻿using MangaReader.Models;
-using MangaReader.Services;
+﻿using MangaReader.Services;
 using MangaReader.Stores;
 using MangaReader.Utilities;
 using MangaReader.ViewModel;
@@ -31,7 +30,6 @@ namespace MangaReader
                 DataContext = provider.GetRequiredService<MainVM>()
             });
 
-            services.AddSingleton<MangaDbContext>();
             services.AddSingleton<MangaService>();
             services.AddSingleton<MangaStore>();
             services.AddSingleton<INavigationService, NavigationService>();

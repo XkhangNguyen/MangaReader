@@ -13,7 +13,7 @@
     </UserControl.Resources>
     <Grid Background="{DynamicResource BackgroundColor}">
         <ScrollViewer VerticalScrollBarVisibility="Visible" MaxHeight="2160"  utils:ScrollViewerMouseWheelBehavior.IncreaseScrollSpeed="True">
-            <ItemsControl ItemsSource="{Binding Mangas}">
+            <ItemsControl ItemsSource="{Binding MangaModels}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <UniformGrid Rows="10" Columns="6"  MaxWidth="960"/>
@@ -45,7 +45,7 @@
                                                   AncestorType=UserControl}}"
                                 CommandParameter="{Binding}"
                                 >
-                                    <TextBlock Text="{Binding Title}" Style="{StaticResource MangaTitle_Style}"/>
+                                    <TextBlock Text="{Binding MangaTitle}" Style="{StaticResource MangaTitle_Style}"/>
                                 </Button>
                                 <!-- Grid for the 3 nearest chapters -->
                                 <StackPanel Grid.Row="2">

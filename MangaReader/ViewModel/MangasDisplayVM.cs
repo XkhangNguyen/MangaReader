@@ -1,15 +1,15 @@
-﻿using MangaReader.Models;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using MangaReader.Stores;
 using MangaReader.Utilities;
 using MangaReader.Services;
+using MangaReader.Model;
 
 namespace MangaReader.ViewModel
 {
     internal class MangasDisplayVM : ViewModelBase
     {
         private readonly MangaStore _mangaStore;
-        public RelayCommand<Manga> ShowMangaDetailCommand { get; }
+        public RelayCommand<MangaModel> ShowMangaDetailCommand { get; }
 
         private INavigationService? _navigation;
 
@@ -19,13 +19,13 @@ namespace MangaReader.ViewModel
             set { _navigation = value; OnPropertyChanged(); }
         }
 
-        private ObservableCollection<Manga>? _mangas;
-        public ObservableCollection<Manga>? Mangas
+        private ObservableCollection<MangaModel>? _mangaModels;
+        public ObservableCollection<MangaModel>? MangaModels
         {
-            get { return _mangas; }
+            get { return _mangaModels; }
             set
             {
-                _mangas = value;
+                _mangaModels = value;
                 OnPropertyChanged();
             }
         }
@@ -38,13 +38,13 @@ namespace MangaReader.ViewModel
 
             _mangaStore.MangasListCreated += OnMangasListCreated;
 
-            ShowMangaDetailCommand = new RelayCommand<Manga>(ShowMangaDetail);
+            ShowMangaDetailCommand = new RelayCommand<MangaModel>(ShowMangaDetail);
 
         }
 
-        private void OnMangasListCreated(ObservableCollection<Manga> mangaModels)
+        private void OnMangasListCreated(ObservableCollection<MangaModel> mangaModels)
         {
-           Mangas = mangaModels;
+           MangaModels = mangaModels;
         }
 
         public override void Dispose()
@@ -54,7 +54,7 @@ namespace MangaReader.ViewModel
             base.Dispose();
         }
 
-        private void ShowMangaDetail(Manga? manga)
+        private void ShowMangaDetail(MangaModel? manga)
         {
             _mangaStore.GetManga(manga);
 

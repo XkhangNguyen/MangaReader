@@ -6,7 +6,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Win32;
 using System;
+using System.Net.Http;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace MangaReader
 {
@@ -23,7 +25,6 @@ namespace MangaReader
         public App()
         {
             IServiceCollection services = new ServiceCollection();
-
 
             services.AddSingleton(provider => new MainWindow
             {
@@ -45,6 +46,8 @@ namespace MangaReader
         }
         protected override void OnStartup(StartupEventArgs e)
         {
+            //ConnectToWebsite();
+
             bool isDarkThemeEnabled = IsSystemDarkThemeEnabled();
 
             if (isDarkThemeEnabled)
@@ -64,6 +67,16 @@ namespace MangaReader
             mainWindow.Show();
 
             base.OnStartup(e);
+        }
+
+        private async void ConnectToWebsite()
+        {
+
+            string url = "https://phetruyen.net";
+
+            HttpClient client = new HttpClient();
+
+            await client.GetAsync(url);
         }
 
         private static bool IsSystemDarkThemeEnabled()

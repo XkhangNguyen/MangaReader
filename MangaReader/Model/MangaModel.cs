@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Newtonsoft.Json;
+﻿using System.Collections.ObjectModel;
+
 
 namespace MangaReader.Model
 {
@@ -13,7 +10,9 @@ namespace MangaReader.Model
         public string MangaDescription { get; set; } = string.Empty;
         public string Author { get; set; } = string.Empty;
         public string CoverImageUrl { get; set; } = string.Empty;
-        public List<GenreModel>? Genres { get; set; }
-        public List<ChapterModel>? Chapters { get; set; }
+        public ObservableCollection<GenreModel> Genres { get; set; } = new ObservableCollection<GenreModel>();
+        public ObservableCollection<ChapterModel> Chapters { get; set; } = new ObservableCollection<ChapterModel>();
+
+        public bool chaptersFetched = false;
     }
 }

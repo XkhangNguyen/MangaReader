@@ -5,7 +5,8 @@ using MangaReader.Utilities;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using System.Net.Http;
-using Newtonsoft.Json;
+using System.Threading.Tasks;
+using System;
 
 namespace MangaReader.ViewModel
 {
@@ -53,15 +54,45 @@ namespace MangaReader.ViewModel
             Navigation?.NavigateTo<MangasDisplayVM>();
         }
 
-        private async void LoadMangaDataAsync()
+        private async Task LoadMangaDataAsync()
         {
+            ObservableCollection<MangaModel> MangaList = null;
 
-            var MangaData = await _mangaService.GetAllMangas();
+            // Define the maximum number of retries
+            int maxRetries = 3;
+            int retryCount = 0;
 
-            _mangaStore?.FetchMangasData(MangaData!);
+            while (MangaList == null && retryCount < maxRetries)
+            {
+                try
+                {
+                    MangaList = await _mangaService.GetAllMangas();
+                }
+                catch (Exception ex)
+                {
+                    // Log the error or handle it as appropriate
+                    Console.WriteLine($"Error while getting Manga data: {ex.Message}");
 
-            Navigation?.NavigateTo<MangasDisplayVM>();
+                    // Increment the retry count
+                    retryCount++;
+
+                    // Add a delay before retrying (exponential backoff)
+                    await Task.Delay(TimeSpan.FromSeconds(Math.Pow(2, retryCount)));
+                }
+            }
+
+            if (MangaList != null)
+            {
+                _mangaStore?.FetchMangasData(MangaList);
+                Navigation?.NavigateTo<MangasDisplayVM>();
+            }
+            else
+            {
+                // Handle the case where data could not be retrieved after maxRetries
+                Console.WriteLine("Failed to retrieve Manga data after maximum retries.");
+            }
         }
+
 
         private void GoBack(ViewModelBase viewModelBase)
         {

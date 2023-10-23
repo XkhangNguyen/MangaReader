@@ -3,6 +3,7 @@ using MangaReader.Services;
 using MangaReader.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 
 namespace MangaReader.Utilities
@@ -12,14 +13,14 @@ namespace MangaReader.Utilities
         event EventHandler CurrentChapterChanged;
         ChapterModel CurrentChapter { get; }
         MangaModel CurrentManga { get; }
-        public void GetListChapters(List<ChapterModel> chapters);
+        public void GetListChapters(ObservableCollection<ChapterModel> chapters);
         public void SetCurrentChapterIndex(int index, MangaModel mangaRef);
         public bool MoveToNextChapter();
         public bool MoveToPreviousChapter();
     }
     public class ChapterIteratorService: IChapterIteratorService
     {
-        private List<ChapterModel>? _chapters;
+        private ObservableCollection<ChapterModel>? _chapters;
 
         private MangaModel currentManga;
 
@@ -38,7 +39,8 @@ namespace MangaReader.Utilities
             Navigation = navigationService;
         }
 
-        public void GetListChapters(List<ChapterModel> chapters)
+        //import chapters list into the iterator
+        public void GetListChapters(ObservableCollection<ChapterModel> chapters)
         {
             _chapters = chapters;
             _currentIndex = 0;

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace MangaReader.Model
 {
@@ -8,6 +9,8 @@ namespace MangaReader.Model
         public MangaModel? MangaModel { get; set; }
         public string ChapterNumber { get; set; } = string.Empty;
         public string ChapterLink { get; set; } = string.Empty;
-        public List<string>? ChapterImageURLs { get; set; }
+        public ObservableCollection<string> ChapterImageURLs { get; set; } = new ObservableCollection<string>();
+
+        public bool imagesFetched = false;
     }
 }

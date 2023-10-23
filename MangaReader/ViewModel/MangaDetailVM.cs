@@ -2,6 +2,8 @@
 using MangaReader.Services;
 using MangaReader.Stores;
 using MangaReader.Utilities;
+using System.Collections.ObjectModel;
+
 
 namespace MangaReader.ViewModel
 {
@@ -10,6 +12,7 @@ namespace MangaReader.ViewModel
         private MangaModel? _mangaModel;
 
         private readonly MangaStore _mangaStore;
+        private readonly MangaService _mangaService;
 
         public RelayCommand<ChapterModel> ShowChapterDetailCommand { get; }
 
@@ -27,17 +30,49 @@ namespace MangaReader.ViewModel
             get { return _mangaModel; }
             set { 
                 _mangaModel = value;
-                _chapterIterator.GetListChapters(_mangaModel?.Chapters);
+
+                LoadMangaChaptersAsync();
+
                 OnPropertyChanged(); 
             }
         }
 
-        public MangaDetailVM(INavigationService navigationService, MangaStore mangaStore, IChapterIteratorService chapterIterator)
+        private async void LoadMangaChaptersAsync()
+        {
+            if (_mangaModel != null)
+            {
+
+                if(_mangaModel.chaptersFetched == false)
+                {
+                    var chapters = await _mangaService.GetMangaChapters(_mangaModel.Id);
+
+                    foreach (var chapter in chapters)
+                    {
+                        MangaModel!.Chapters.Add(chapter);
+                    }
+
+                    _mangaModel.chaptersFetched = true;
+
+                    _chapterIterator.GetListChapters(chapters); 
+                }
+                else
+                {
+                    _chapterIterator.GetListChapters(_mangaModel.Chapters);
+                }
+
+
+            }
+        }
+
+        public MangaDetailVM(INavigationService navigationService, MangaStore mangaStore, IChapterIteratorService chapterIterator, MangaService mangaService)
         {
             Navigation = navigationService;
+
             _chapterIterator = chapterIterator;
             
             _mangaStore = mangaStore;
+
+            _mangaService = mangaService;
 
             _mangaStore.MangaCreated += OnMangaCreated;
 
@@ -47,6 +82,7 @@ namespace MangaReader.ViewModel
         private void ShowChapterDetail(ChapterModel? chapter)
         {
             int currentIndex = MangaModel.Chapters.IndexOf(chapter);
+
             _chapterIterator.SetCurrentChapterIndex(currentIndex, MangaModel);
         }
 

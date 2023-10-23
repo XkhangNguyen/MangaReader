@@ -36,6 +36,7 @@ namespace MangaReader.View
             if (DataContext is ReadSceneVM viewModel)
             {
                 viewModel.PropertyChanged += ViewModel_PropertyChanged;
+
                 ViewModel_PropertyChanged(viewModel, new PropertyChangedEventArgs(nameof(viewModel.ChapterModel)));
             }
         }
@@ -96,9 +97,12 @@ namespace MangaReader.View
                 scroll.ScrollToVerticalOffset(0);
                 scroll.Focus();
                 loadedImages.Clear();
-                foreach (var imageUrl in viewModel.ChapterModel?.ChapterImageURLs ?? new List<string>())
+
+                await viewModel.LoadImagesAsync();
+
+                foreach (var imageUrl in viewModel.ChapterModel?.ChapterImageURLs!)
                 {
-                    await DownloadAndDisplayImage(imageUrl, token);
+                   await DownloadAndDisplayImage(imageUrl, token);
                 }
             }
         }

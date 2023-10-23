@@ -14,10 +14,10 @@ namespace MangaReader.Services
     {
         private readonly HttpClient _httpClient = new HttpClient();
 
-        string AllMangaAPIUrl = "https://ba6edntvfl.execute-api.ap-southeast-1.amazonaws.com/Production/all-manga";
-        string MangaChaptersAPIUrl = "https://s97qgvojxe.execute-api.ap-southeast-2.amazonaws.com/Production/mangas";
+        string AllMangaAPIUrl = "https://2yd98ioj81.execute-api.ap-southeast-1.amazonaws.com/dev/all-mangas";
+        string MangaChaptersAPIUrl = "https://2yd98ioj81.execute-api.ap-southeast-1.amazonaws.com/dev/chapters/";
         string MangaOfChapterAPIUrl = "https://s97qgvojxe.execute-api.ap-southeast-2.amazonaws.com/Production/mangas";
-        string ChapterImagesOfChapterAPIUrl = "https://s97qgvojxe.execute-api.ap-southeast-2.amazonaws.com/Production/mangas";
+        string ChapterImagesOfChapterAPIUrl = "https://2yd98ioj81.execute-api.ap-southeast-1.amazonaws.com/dev/images/";
         string AllMangasOfGenreAPIUrl = "https://s97qgvojxe.execute-api.ap-southeast-2.amazonaws.com/Production/mangas";
 
         public MangaService()
@@ -57,11 +57,11 @@ namespace MangaReader.Services
             }
         }
 
-        public async Task<ObservableCollection<ChapterModel>> GetMangaChapters()
+        public async Task<ObservableCollection<ChapterModel>> GetMangaChapters(int mangaId)
         {
             try
             {
-                HttpResponseMessage response = await _httpClient.GetAsync(MangaChaptersAPIUrl);
+                HttpResponseMessage response = await _httpClient.GetAsync(MangaChaptersAPIUrl + mangaId.ToString());
                 if (response.IsSuccessStatusCode)
                 {
                     string responseBody = await response.Content.ReadAsStringAsync();
@@ -111,18 +111,27 @@ namespace MangaReader.Services
             }
         }
 
-        public async Task<ObservableCollection<ChapterImageModel>> GetChapterImagesOfChapter(int chapterId)
+        public async Task<ObservableCollection<string>> GetChapterImagesOfChapter(int chapterId)
         {
             try
             {
-                HttpResponseMessage response = await _httpClient.GetAsync(ChapterImagesOfChapterAPIUrl);
+                HttpResponseMessage response = await _httpClient.GetAsync(ChapterImagesOfChapterAPIUrl + chapterId.ToString());
                 if (response.IsSuccessStatusCode)
                 {
                     string responseBody = await response.Content.ReadAsStringAsync();
 
-                    var data = JsonConvert.DeserializeObject<ObservableCollection<ChapterImageModel>>(responseBody);
+                    // Parse the JSON string into a dynamic object (JObject)
+                    JObject responseObj = JObject.Parse(responseBody);
 
-                    return data!;
+                    // Get the chapter_image_urls as a string
+                    string chapterImageUrls = responseObj["chapter_image_urls"]!.ToString();
+
+                    // Split the chapter_image_urls into a string array
+                    string[] imageUrls = chapterImageUrls.Split(';');
+
+                    ObservableCollection<string> imageUrlsCollection = new ObservableCollection<string>(imageUrls);
+
+                    return imageUrlsCollection;
                 }
                 else
                 {
@@ -169,14 +178,15 @@ namespace MangaReader.Services
     {
         public override bool CanConvert(Type objectType)
         {
-            return objectType == typeof(List<GenreModel>);
+            return objectType == typeof(ObservableCollection<GenreModel>);
         }
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             JArray jsonArray = JArray.Load(reader);
-            List<GenreModel> genres = jsonArray.Select(j => new GenreModel { GenreName = j.ToString() }).ToList();
-            return genres;
+            ObservableCollection<GenreModel> genres = new ObservableCollection<GenreModel>(
+                jsonArray.Select(j => new GenreModel { GenreName = j.ToString() })
+            ); return genres;
         }
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)

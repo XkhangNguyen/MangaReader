@@ -1,0 +1,18 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Style x:Key="MangaDescriptionDisplay_Style"
+           TargetType="TextBlock">
+        <Setter Property="Foreground"
+                Value="{DynamicResource MangaDescription}"/>
+        <Setter Property="FontSize"
+                Value="12"/>
+        <Setter Property="FontWeight"
+                Value="Normal"/>
+        <Setter Property="TextWrapping"
+                Value="Wrap"/>
+        <Setter Property="TextTrimming"
+                Value="WordEllipsis"/>
+        <Setter Property="LineHeight"
+                Value="1"/>
+    </Style>
+</ResourceDictionary>

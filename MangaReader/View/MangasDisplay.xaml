@@ -12,56 +12,55 @@
         <utils:ChapterCountToChapterSubsetConverter x:Key="ChapterCountToChapterSubsetConverter" />
     </UserControl.Resources>
     <Grid Background="{DynamicResource BackgroundColor}">
-        <ScrollViewer VerticalScrollBarVisibility="Visible" MaxHeight="2160"  utils:ScrollViewerMouseWheelBehavior.IncreaseScrollSpeed="True">
+        <ScrollViewer PreviewMouseWheel="OuterScrollViewer_PreviewMouseWheel" x:Name="OuterScrollViewer" VerticalScrollBarVisibility="Visible" MaxHeight="2160"  utils:ScrollViewerMouseWheelBehavior.IncreaseScrollSpeed="True">
             <ItemsControl ItemsSource="{Binding MangaModels}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <UniformGrid Rows="10" Columns="6"  MaxWidth="960"/>
+                        <UniformGrid Rows="10" Columns="3"  MaxWidth="1080"/>
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <Border BorderBrush="Transparent" Margin="6.5" Padding="0,0,0,5">
                             <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="*"/>
-                                </Grid.RowDefinitions>
-
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="180"/>
+                                </Grid.ColumnDefinitions>
+                                
                                 <!-- Manga Cover Image -->
-                                <Button Grid.Row="0" 
-                                Command="{Binding DataContext.ShowMangaDetailCommand, 
+                                <Button Grid.Column="0"
+                                    Command="{Binding DataContext.ShowMangaDetailCommand, 
                                                   RelativeSource={RelativeSource 
                                                   AncestorType=UserControl}}"
                                 CommandParameter="{Binding}"
                                 >
                                     <Image Source="{Binding CoverImageUrl}" Style="{StaticResource CoverImage_Style}"/>
                                 </Button>
-                                <!-- Manga Title -->
-                                <Button Style="{DynamicResource LinkButton_Style}" Margin="0,10,0,0" Padding="0" Grid.Row="1" HorizontalAlignment="Left"
-                                Command="{Binding DataContext.ShowMangaDetailCommand, 
-                                                  RelativeSource={RelativeSource 
-                                                  AncestorType=UserControl}}"
-                                CommandParameter="{Binding}"
-                                >
-                                    <TextBlock Text="{Binding MangaTitle}" Style="{StaticResource MangaTitle_Style}"/>
-                                </Button>
-                                <!-- Grid for the 3 nearest chapters -->
-                                <StackPanel Grid.Row="2">
-                                    <ItemsControl ItemsSource="{Binding Chapters, Converter={StaticResource ChapterCountToChapterSubsetConverter}}">
-                                        <ItemsControl.ItemsPanel>
-                                            <ItemsPanelTemplate>
-                                                <UniformGrid Margin="0,2.5,0,0" Rows="3" Columns="1" />
-                                            </ItemsPanelTemplate>
-                                        </ItemsControl.ItemsPanel>
-                                        <ItemsControl.ItemTemplate>
-                                            <DataTemplate>
-                                                <TextBlock Text="{Binding ChapterNumber}" Style="{StaticResource ChapterTitle_Style}"/>
-                                            </DataTemplate>
-                                        </ItemsControl.ItemTemplate>
-                                    </ItemsControl>
-                                </StackPanel>
+
+                                <Grid Grid.Column="1">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+                                    
+                                    <!-- Manga Title -->
+                                    <Button Style="{DynamicResource LinkButton_Style}" Margin="0,10,0,0" Padding="0" Grid.Row="0" HorizontalAlignment="Left"
+                                    Command="{Binding DataContext.ShowMangaDetailCommand, 
+                                                      RelativeSource={RelativeSource 
+                                                      AncestorType=UserControl}}"
+                                    CommandParameter="{Binding}"
+                                    >
+                                        <TextBlock Text="{Binding MangaTitle}" Style="{StaticResource MangaTitle_Style}"/>
+                                    </Button>
+
+                                    <TextBlock Grid.Row="1" Text="Chapters" Style="{StaticResource ChapterTitle_Style}"/>
+                                    <ScrollViewer MouseEnter="InnerScrollViewer_MouseEnter" MouseLeave="InnerScrollViewer_MouseLeave" Grid.Row="2" MaxHeight="150" VerticalScrollBarVisibility="Hidden">
+                                        <TextBlock  Text="{Binding MangaDescription}" Style="{StaticResource MangaDescriptionDisplay_Style}"/>
+                                    </ScrollViewer>
+
+                                </Grid>
                             </Grid>
                         </Border>
                     </DataTemplate>

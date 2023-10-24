@@ -16,6 +16,7 @@
                 <ResourceDictionary Source="Styles/MangaITem.xaml"/>
                 <ResourceDictionary Source="Styles/LinkButton.xaml"/>
                 <ResourceDictionary Source="Styles/TagButton.xaml"/>
+                <ResourceDictionary Source="Styles/MangaDescriptionDisplay.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

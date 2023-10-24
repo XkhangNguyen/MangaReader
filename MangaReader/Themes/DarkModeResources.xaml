@@ -2,6 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <SolidColorBrush Color="#1f1f1f" x:Key="BackgroundColor"/>
     <SolidColorBrush Color="#FFFFFF" x:Key="MangaTitle"/>
+    <SolidColorBrush Color="#FFFFFF" x:Key="MangaDescription"/>
     <SolidColorBrush Color="#dfe6e9" x:Key="ChapterNumber"/>
     <SolidColorBrush Color="#FFFFFF" x:Key="Border_UI"/>
 </ResourceDictionary>

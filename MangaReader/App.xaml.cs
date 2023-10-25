@@ -46,8 +46,6 @@ namespace MangaReader
         }
         protected override void OnStartup(StartupEventArgs e)
         {
-            //ConnectToWebsite();
-
             bool isDarkThemeEnabled = IsSystemDarkThemeEnabled();
 
             if (isDarkThemeEnabled)
@@ -64,19 +62,10 @@ namespace MangaReader
             _serviceProvider.GetRequiredService<ReadSceneVM>();
 
             var mainWindow = _serviceProvider.GetRequiredService<MainWindow>();
+
             mainWindow.Show();
 
             base.OnStartup(e);
-        }
-
-        private async void ConnectToWebsite()
-        {
-
-            string url = "https://phetruyen.net";
-
-            HttpClient client = new HttpClient();
-
-            await client.GetAsync(url);
         }
 
         private static bool IsSystemDarkThemeEnabled()

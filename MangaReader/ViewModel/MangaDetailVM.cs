@@ -90,5 +90,10 @@ namespace MangaReader.ViewModel
         {
             MangaModel = mangaModel;
         }
+
+        public void ToMangaDisplay()
+        {
+            Navigation?.NavigateTo<MangasDisplayVM>();
+        }
     }
 }

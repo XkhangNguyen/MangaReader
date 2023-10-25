@@ -60,7 +60,5 @@ namespace MangaReader.ViewModel
 
             Navigation?.NavigateTo<MangaDetailVM>();
         }
-
-
     }
 }

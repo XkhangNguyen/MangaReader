@@ -5,7 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:utils="clr-namespace:MangaReader.Utilities"
              mc:Ignorable="d" 
-             d:DesignHeight="1080" d:DesignWidth="960">
+             d:DesignHeight="1080" d:DesignWidth="960"
+             PreviewMouseDown="UserControl_PreviewButtonDown"
+             >
     <UserControl.Resources>
         <utils:ChaptersToColumnCountConverter x:Key="ChaptersToColumnCountConverter" />
     </UserControl.Resources>

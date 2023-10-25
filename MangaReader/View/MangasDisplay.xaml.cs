@@ -17,12 +17,10 @@ namespace MangaReader.View
     /// </summary>
     public partial class MangasDisplay : UserControl
     {
-        ScrollViewer outerScrollViewer;
-        ScrollViewer innerScrollViewer;
+        ScrollViewer? innerScrollViewer;
         public MangasDisplay()
         {
             InitializeComponent();
-            outerScrollViewer = OuterScrollViewer;
         }
 
         private void OuterScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
@@ -51,7 +49,7 @@ namespace MangaReader.View
         private void ScrollInnerScrollViewer(double delta)
         {
             // Scroll the inner ScrollViewer based on the mouse wheel delta
-            innerScrollViewer.ScrollToVerticalOffset(innerScrollViewer.VerticalOffset - delta);
+            innerScrollViewer!.ScrollToVerticalOffset(innerScrollViewer.VerticalOffset - delta);
         }
 
 

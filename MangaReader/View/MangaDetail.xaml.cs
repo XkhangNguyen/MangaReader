@@ -1,4 +1,5 @@
 ﻿using MangaReader.Model;
+using MangaReader.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,6 +32,18 @@ namespace MangaReader.View
             if (sender is Image coverImage && coverImage.DataContext is MangaModel manga)
             {
                 coverImage.Source = new BitmapImage(new Uri("https:" + manga.CoverImageUrl));
+            }
+        }
+
+        private void UserControl_PreviewButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (DataContext is MangaDetailVM viewModel)
+            {
+                if (e.ChangedButton == MouseButton.XButton1)
+                {
+                    viewModel.ToMangaDisplay();
+                    e.Handled = true; // Mark the event as handled to prevent other keyboard shortcuts from interfering
+                }
             }
         }
     }

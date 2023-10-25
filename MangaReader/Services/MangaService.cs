@@ -184,9 +184,12 @@ namespace MangaReader.Services
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             JArray jsonArray = JArray.Load(reader);
+
             ObservableCollection<GenreModel> genres = new ObservableCollection<GenreModel>(
-                jsonArray.Select(j => new GenreModel { GenreName = j.ToString() })
-            ); return genres;
+                jsonArray.Select(j => new GenreModel { GenreName = j["genre_name"].ToString() })
+            ); 
+
+            return genres;
         }
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)

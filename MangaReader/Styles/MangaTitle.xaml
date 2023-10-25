@@ -14,8 +14,6 @@
                 Value="WordEllipsis"/>
         <Setter Property="LineHeight"
                 Value="1.2"/>
-        <Setter Property="Height"
-                Value="auto"/>
         <Setter Property="MaxHeight"
                 Value="60"/>
     </Style>

@@ -5,7 +5,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:utils="clr-namespace:MangaReader.Utilities"
              mc:Ignorable="d" 
-             d:DesignHeight="1080" d:DesignWidth="960"
              Style="{StaticResource Scene_Style}"
              >
     <UserControl.Resources>
@@ -21,46 +20,66 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Border BorderBrush="Transparent" Margin="6.5" Padding="0,0,0,5">
+                        <Border BorderBrush="Transparent" Margin="10" Padding="0,0,0,5">
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="180"/>
+                                    <ColumnDefinition Width="160"/>
+                                    <ColumnDefinition Width="160"/>
                                 </Grid.ColumnDefinitions>
-                                
+
                                 <!-- Manga Cover Image -->
                                 <Button Grid.Column="0"
-                                    Command="{Binding DataContext.ShowMangaDetailCommand, 
+                                        Command="{Binding DataContext.ShowMangaDetailCommand, 
                                                   RelativeSource={RelativeSource 
                                                   AncestorType=UserControl}}"
-                                CommandParameter="{Binding}"
+                                        CommandParameter="{Binding}"
+                                        Padding="0"
                                 >
-                                    <Image Source="{Binding CoverImageUrl}" Style="{StaticResource CoverImage_Style}"/>
+                                    <Image 
+                                        Source="{Binding CoverImageUrl}" 
+                                        Style="{StaticResource CoverImage_Style}"
+                                    />
                                 </Button>
 
-                                <Grid Grid.Column="1">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="*"/>
-                                    </Grid.RowDefinitions>
-                                    
-                                    <!-- Manga Title -->
-                                    <Button Style="{DynamicResource LinkButton_Style}" Margin="0,10,0,0" Padding="0" Grid.Row="0" HorizontalAlignment="Left"
-                                    Command="{Binding DataContext.ShowMangaDetailCommand, 
-                                                      RelativeSource={RelativeSource 
-                                                      AncestorType=UserControl}}"
-                                    CommandParameter="{Binding}"
-                                    >
-                                        <TextBlock Text="{Binding MangaTitle}" Style="{StaticResource MangaTitle_Style}"/>
-                                    </Button>
+                                <Border Height="200" Grid.Column="1" Padding="5 0">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
 
-                                    <TextBlock Grid.Row="1" Text="Chapters" Style="{StaticResource ChapterTitle_Style}"/>
-                                    <ScrollViewer MouseEnter="InnerScrollViewer_MouseEnter" MouseLeave="InnerScrollViewer_MouseLeave" Grid.Row="2" MaxHeight="150" VerticalScrollBarVisibility="Hidden">
-                                        <TextBlock  Text="{Binding MangaDescription}" Style="{StaticResource MangaDescriptionDisplay_Style}"/>
-                                    </ScrollViewer>
+                                        <!-- Manga Title -->
+                                        <Button 
+                                            Style="{DynamicResource LinkButton_Style}" 
+                                            Padding="0" Grid.Row="0" 
+                                            HorizontalAlignment="Left"
+                                            Command="{Binding DataContext.ShowMangaDetailCommand, 
+                                                          RelativeSource={RelativeSource 
+                                                          AncestorType=UserControl}}"
+                                            CommandParameter="{Binding}"
+                                        >
+                                            <TextBlock Text="{Binding MangaTitle}" Style="{StaticResource MangaTitle_Style}"/>
+                                        </Button>
 
-                                </Grid>
+                                        <TextBlock 
+                                            Grid.Row="1" 
+                                            Text="Chapters" 
+                                            Style="{StaticResource ChapterTitle_Style}"
+                                        />
+                                        <ScrollViewer 
+                                            MouseEnter="InnerScrollViewer_MouseEnter" 
+                                            MouseLeave="InnerScrollViewer_MouseLeave" 
+                                            Grid.Row="2" MaxHeight="160" 
+                                            VerticalScrollBarVisibility="Hidden"
+                                        >
+                                            <TextBlock 
+                                                Text="{Binding MangaDescription}" 
+                                                Style="{StaticResource MangaDescriptionDisplay_Style}"
+                                            />
+                                        </ScrollViewer>
+                                    </Grid>
+                                </Border>
                             </Grid>
                         </Border>
                     </DataTemplate>

@@ -2,13 +2,10 @@
 using MangaReader.Stores;
 using MangaReader.Utilities;
 using MangaReader.ViewModel;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Win32;
 using System;
-using System.Net.Http;
 using System.Windows;
-using System.Windows.Controls;
 
 namespace MangaReader
 {
@@ -18,7 +15,6 @@ namespace MangaReader
     public partial class App : Application
     {
         private readonly ServiceProvider _serviceProvider;
-        public IConfiguration Configuration { get; private set; }
 
         public ServiceProvider ServiceProvider { get { return _serviceProvider; } }
 
@@ -32,6 +28,7 @@ namespace MangaReader
             });
 
             services.AddSingleton<MangaService>();
+            services.AddSingleton<GenreStore>();
             services.AddSingleton<MangaStore>();
             services.AddSingleton<INavigationService, NavigationService>();
             services.AddSingleton<IChapterIteratorService, ChapterIteratorService>();
@@ -44,7 +41,7 @@ namespace MangaReader
 
             _serviceProvider = services.BuildServiceProvider();
         }
-        protected override void OnStartup(StartupEventArgs e)
+        protected async override void OnStartup(StartupEventArgs e)
         {
             bool isDarkThemeEnabled = IsSystemDarkThemeEnabled();
 
@@ -57,13 +54,15 @@ namespace MangaReader
                 Resources.MergedDictionaries.Add(darkModeResources);
             }
 
-            //initialize the viewmodels
+            //initialize the view models
             _serviceProvider.GetRequiredService<MangaDetailVM>();
             _serviceProvider.GetRequiredService<ReadSceneVM>();
 
             var mainWindow = _serviceProvider.GetRequiredService<MainWindow>();
-
             mainWindow.Show();
+
+            //initialize async functions in view models
+            await _serviceProvider.GetRequiredService<MainVM>().InitializeAsync();
 
             base.OnStartup(e);
         }

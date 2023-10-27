@@ -4,7 +4,6 @@ using MangaReader.Stores;
 using MangaReader.Utilities;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System;
 
@@ -12,12 +11,26 @@ namespace MangaReader.ViewModel
 {
     public class MainVM : ViewModelBase
     {
-        private MangaStore? _mangaStore;
+        private readonly MangaStore? _mangaStore;
 
-        private readonly HttpClient _httpClient = new HttpClient();
-
+        private readonly GenreStore _genreStore;
 
         //private Timer _timer;
+
+        private bool _showSideBar;
+        public bool ShowSideBar
+        {
+            get { return _showSideBar; }
+            set
+            {
+                if (_showSideBar != value)
+                {
+                    _showSideBar = value;
+                    OnPropertyChanged(); // Implement OnPropertyChanged for INotifyPropertyChanged
+                }
+            }
+        }
+
 
         public ICommand NavigateBackCommand { get;}
         public ICommand MangaDisplayCommand { get;}
@@ -31,7 +44,7 @@ namespace MangaReader.ViewModel
 
         private MangaService _mangaService;
 
-        public MainVM(INavigationService navigationService, MangaStore mangaStore, MangaService mangaService)
+        public MainVM(INavigationService navigationService, MangaStore mangaStore, GenreStore genreStore,MangaService mangaService)
         {
             Navigation = navigationService;
             _mangaService = mangaService;
@@ -40,24 +53,26 @@ namespace MangaReader.ViewModel
 
             _mangaStore = mangaStore;
 
-            LoadMangaDataAsync();
+            _genreStore = genreStore;
+
             //_timer = new Timer(state => LoadMangaDataAsync(), null, TimeSpan.Zero, TimeSpan.FromSeconds(15));
 
-
             NavigateBackCommand = new RelayCommand<ViewModelBase>(GoBack);
+
             MangaDisplayCommand = new RelayCommand<ViewModelBase>(GoToMangaDisplay);
-
         }
 
-        private void GoToMangaDisplay(ViewModelBase? @base)
+        public async Task InitializeAsync()
         {
-            Navigation?.NavigateTo<MangasDisplayVM>();
-        }
+            await LoadGenreData();
+            await LoadMangaData();
+        } 
 
-        private async Task LoadMangaDataAsync()
+        private async Task LoadMangaData()
         {
             ObservableCollection<MangaModel> MangaList = null;
 
+            //retries are needed to adapt AWS RDS cold start
             // Define the maximum number of retries
             int maxRetries = 3;
             int retryCount = 0;
@@ -84,6 +99,8 @@ namespace MangaReader.ViewModel
             if (MangaList != null)
             {
                 _mangaStore?.FetchMangasData(MangaList);
+                await Task.Delay(TimeSpan.FromSeconds(0.5));
+                ShowSideBar = true;
                 Navigation?.NavigateTo<MangasDisplayVM>();
             }
             else
@@ -93,6 +110,25 @@ namespace MangaReader.ViewModel
             }
         }
 
+        private async Task LoadGenreData()
+        {
+            try
+            {
+                ObservableCollection<GenreModel> genresList = await _mangaService.GetAllGenres();
+
+                _genreStore.FetchGenresData(genresList);
+            }
+            catch (Exception ex)
+            {
+                // Log the error or handle it as appropriate
+                Console.WriteLine($"Error while getting Genre data: {ex.Message}");
+            }
+        }
+
+        private void GoToMangaDisplay(ViewModelBase? @base)
+        {
+            Navigation?.NavigateTo<MangasDisplayVM>();
+        }
 
         private void GoBack(ViewModelBase viewModelBase)
         {

@@ -2,7 +2,6 @@
 using MangaReader.Services;
 using MangaReader.Stores;
 using MangaReader.Utilities;
-using System.Collections.ObjectModel;
 
 
 namespace MangaReader.ViewModel

@@ -1,13 +1,7 @@
-﻿using MangaReader.Model;
-using MangaReader.Stores;
-using MangaReader.ViewModel;
-using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
+
 
 
 namespace MangaReader.View
@@ -18,6 +12,7 @@ namespace MangaReader.View
     public partial class MangasDisplay : UserControl
     {
         ScrollViewer? innerScrollViewer;
+
         public MangasDisplay()
         {
             InitializeComponent();
@@ -32,6 +27,8 @@ namespace MangaReader.View
                 ScrollInnerScrollViewer(e.Delta); // Scroll the inner ScrollViewer
             }
         }
+
+
 
         private bool IsMouseOverInnerScrollViewer(MouseWheelEventArgs e)
         {

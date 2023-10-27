@@ -9,9 +9,56 @@
              >
     <UserControl.Resources>
         <utils:ChapterCountToChapterSubsetConverter x:Key="ChapterCountToChapterSubsetConverter" />
+        <utils:ScreenHeightConverter x:Key="ScreenHeightConverter" />
     </UserControl.Resources>
     <Grid Background="{DynamicResource BackgroundColor}">
-        <ScrollViewer PreviewMouseWheel="OuterScrollViewer_PreviewMouseWheel" x:Name="OuterScrollViewer" VerticalScrollBarVisibility="Visible" MaxHeight="2160"  utils:ScrollViewerMouseWheelBehavior.IncreaseScrollSpeed="True">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="150"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="150"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0" Text="All Genres" Style="{StaticResource MangaTitle_Style}"/>
+            <ScrollViewer 
+                Grid.Row="1" VerticalScrollBarVisibility="Hidden"
+                MouseEnter="InnerScrollViewer_MouseEnter" 
+                MouseLeave="InnerScrollViewer_MouseLeave"
+                MaxHeight="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight, Converter={StaticResource ScreenHeightConverter}}"
+            >
+                <ItemsControl ItemsSource="{Binding GenreModels}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Rows="56" Columns="1"  MaxWidth="150"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Button Style="{DynamicResource TagButton_Style}">
+                                <TextBlock Text="{Binding GenreName}" Height="30" Style="{StaticResource MangaTitle_Style}"/>
+                            </Button>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </Grid>
+        <ScrollViewer  
+            Grid.Column = "1"
+            PreviewMouseWheel="OuterScrollViewer_PreviewMouseWheel" 
+            VerticalScrollBarVisibility="Hidden" 
+            MaxHeight="2160"  
+            utils:ScrollViewerMouseWheelBehavior.IncreaseScrollSpeed="True"
+        >
             <ItemsControl ItemsSource="{Binding MangaModels}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>

@@ -2,7 +2,6 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Net.Http;
 using System.Linq;
@@ -14,16 +13,12 @@ namespace MangaReader.Services
     {
         private readonly HttpClient _httpClient = new HttpClient();
 
-        string AllMangaAPIUrl = "https://2yd98ioj81.execute-api.ap-southeast-1.amazonaws.com/dev/all-mangas";
-        string MangaChaptersAPIUrl = "https://2yd98ioj81.execute-api.ap-southeast-1.amazonaws.com/dev/chapters/";
-        string MangaOfChapterAPIUrl = "https://s97qgvojxe.execute-api.ap-southeast-2.amazonaws.com/Production/mangas";
-        string ChapterImagesOfChapterAPIUrl = "https://2yd98ioj81.execute-api.ap-southeast-1.amazonaws.com/dev/images/";
-        string AllMangasOfGenreAPIUrl = "https://s97qgvojxe.execute-api.ap-southeast-2.amazonaws.com/Production/mangas";
-
-        public MangaService()
-        {
-
-        }
+        readonly string AllMangaAPIUrl = "https://2yd98ioj81.execute-api.ap-southeast-1.amazonaws.com/dev/all-mangas";
+        readonly string AllGerneAPIUrl = "https://2yd98ioj81.execute-api.ap-southeast-1.amazonaws.com/dev/genres";
+        readonly string MangaChaptersAPIUrl = "https://2yd98ioj81.execute-api.ap-southeast-1.amazonaws.com/dev/chapters/";
+        readonly string ChapterImagesOfChapterAPIUrl = "https://2yd98ioj81.execute-api.ap-southeast-1.amazonaws.com/dev/images/";
+        readonly string AllMangasOfGenreAPIUrl = "https://s97qgvojxe.execute-api.ap-southeast-2.amazonaws.com/Production/mangas/";
+        public MangaService(){ }
 
         public async Task<ObservableCollection<MangaModel>> GetAllMangas()
         {
@@ -40,9 +35,36 @@ namespace MangaReader.Services
                 {
                     string responseBody = await response.Content.ReadAsStringAsync();
 
-                    ObservableCollection<MangaModel>? manga = JsonConvert.DeserializeObject<ObservableCollection<MangaModel>>(responseBody, settings);
+                    ObservableCollection<MangaModel>? mangas = JsonConvert.DeserializeObject<ObservableCollection<MangaModel>>(responseBody, settings);
 
-                    return manga!;
+                    return mangas!;
+                }
+                else
+                {
+                    // Handle API error (e.g., non-200 status code)
+                    return null!;
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                // Handle any network-related errors
+                return null!;
+            }
+        }
+
+        public async Task<ObservableCollection<GenreModel>> GetAllGenres()
+        {
+            try
+            {
+
+                HttpResponseMessage response = await _httpClient.GetAsync(AllGerneAPIUrl);
+                if (response.IsSuccessStatusCode)
+                {
+                    string responseBody = await response.Content.ReadAsStringAsync();
+
+                    ObservableCollection<GenreModel>? genres = JsonConvert.DeserializeObject<ObservableCollection<GenreModel>>(responseBody);
+
+                    return genres!;
                 }
                 else
                 {
@@ -67,34 +89,6 @@ namespace MangaReader.Services
                     string responseBody = await response.Content.ReadAsStringAsync();
 
                     var data = JsonConvert.DeserializeObject<ObservableCollection<ChapterModel>>(responseBody);
-
-                    return data!;
-                }
-                else
-                {
-                    // Handle API error (e.g., non-200 status code)
-                    return null!;
-                }
-            }
-            catch (HttpRequestException ex)
-            {
-                // Handle any network-related errors
-                return null!;
-            }
-        }
-
-
-
-        public async Task<MangaModel> GetMangaOfChapter(int chapterId)
-        {
-            try
-            {
-                HttpResponseMessage response = await _httpClient.GetAsync(MangaOfChapterAPIUrl);
-                if (response.IsSuccessStatusCode)
-                {
-                    string responseBody = await response.Content.ReadAsStringAsync();
-
-                    var data = JsonConvert.DeserializeObject<MangaModel>(responseBody);
 
                     return data!;
                 }
@@ -151,7 +145,7 @@ namespace MangaReader.Services
         {
             try
             {
-                HttpResponseMessage response = await _httpClient.GetAsync(AllMangasOfGenreAPIUrl);
+                HttpResponseMessage response = await _httpClient.GetAsync(AllMangasOfGenreAPIUrl + genreId);
                 if (response.IsSuccessStatusCode)
                 {
                     string responseBody = await response.Content.ReadAsStringAsync();

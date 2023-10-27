@@ -6,6 +6,8 @@ namespace MangaReader.Stores
 {
     public class MangaStore
     {
+        private ObservableCollection<MangaModel>? _mangasList;
+
         public event Action<MangaModel>? MangaCreated;
         public void GetManga(MangaModel? mangaModel)
         {
@@ -13,7 +15,7 @@ namespace MangaReader.Stores
                 MangaCreated?.Invoke(mangaModel);
         }
 
-        private ObservableCollection<MangaModel>? _mangasList;
+        private event Action<ObservableCollection<MangaModel>>? OnMangasListCreated;
 
         public event Action<ObservableCollection<MangaModel>>? MangasListCreated
         {
@@ -31,8 +33,6 @@ namespace MangaReader.Stores
                 OnMangasListCreated -= value;
             }
         }
-
-        private event Action<ObservableCollection<MangaModel>>? OnMangasListCreated;
 
         public void FetchMangasData(ObservableCollection<MangaModel> MangasList)
         {

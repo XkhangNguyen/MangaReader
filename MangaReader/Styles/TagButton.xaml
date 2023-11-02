@@ -2,7 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Style x:Key="TagButton_Style" TargetType="Button">
         <Setter Property="BorderBrush"
-                Value="Black"/>
+                Value="White"/>
         <Setter Property="BorderThickness"
                 Value="1" />
         <Setter Property="Background"
@@ -10,6 +10,6 @@
         <Setter Property="Padding"
                 Value="5 0"/>
         <Setter Property="Margin"
-                Value="5 0"/>
+                Value="5 2"/>
     </Style>
 </ResourceDictionary>

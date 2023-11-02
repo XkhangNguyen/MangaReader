@@ -3,7 +3,8 @@ using MangaReader.Stores;
 using MangaReader.Utilities;
 using MangaReader.Services;
 using MangaReader.Model;
-using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace MangaReader.ViewModel
 {
@@ -13,7 +14,12 @@ namespace MangaReader.ViewModel
 
         private readonly GenreStore _genreStore;
 
+        private readonly MangaService _mangaService;
+
+        private IDictionary<GenreModel, ObservableCollection<MangaModel>> mangasOfGenre = new Dictionary<GenreModel, ObservableCollection<MangaModel>>();
+
         public RelayCommand<MangaModel> ShowMangaDetailCommand { get; }
+        public RelayCommand<GenreModel> ShowMangasOfGenreCommand { get; }
 
         private INavigationService? _navigation;
         public INavigationService? Navigation
@@ -44,19 +50,23 @@ namespace MangaReader.ViewModel
             }
         }
 
-        public MangasDisplayVM(INavigationService navigationService, MangaStore mangaStore, GenreStore genreStore)
+        public MangasDisplayVM(INavigationService navigationService, MangaStore mangaStore, GenreStore genreStore, MangaService mangaService)
         {
             Navigation = navigationService;
 
             _mangaStore = mangaStore;
 
             _genreStore = genreStore;
+            
+            _mangaService = mangaService;
 
             _mangaStore.MangasListCreated += OnMangasListCreated;
 
             _genreStore.GenresListCreated += OnGenresListCreated;
 
             ShowMangaDetailCommand = new RelayCommand<MangaModel>(ShowMangaDetail);
+
+            ShowMangasOfGenreCommand = new RelayCommand<GenreModel>(ShowMangasOfGenre!);
 
         }
 
@@ -68,6 +78,23 @@ namespace MangaReader.ViewModel
         private void OnMangasListCreated(ObservableCollection<MangaModel> mangaModels)
         {
            MangaModels = mangaModels;
+        }
+
+        private async void ShowMangasOfGenre(GenreModel genreModel)
+        {
+            MangaModels = await FindMangasOfGenre(genreModel);
+        }
+
+        private async Task<ObservableCollection<MangaModel>> FindMangasOfGenre(GenreModel genreModel)
+        {
+            if (!mangasOfGenre.ContainsKey(genreModel))
+            {
+                ObservableCollection<MangaModel> mangaModels = await _mangaService.GetAllMangasOfGenre(genreModel.Id);
+
+                mangasOfGenre.Add(genreModel, await _mangaService.GetAllMangasOfGenre(genreModel.Id));
+            }
+
+            return mangasOfGenre[genreModel];
         }
 
         public override void Dispose()
@@ -83,6 +110,11 @@ namespace MangaReader.ViewModel
             _mangaStore.GetManga(manga);
 
             Navigation?.NavigateTo<MangaDetailVM>();
+        }
+
+        public async void ReloadAllManga()
+        {
+            MangaModels = await _mangaService.GetAllMangas();
         }
     }
 }

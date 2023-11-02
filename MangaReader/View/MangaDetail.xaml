@@ -57,7 +57,7 @@
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <Button Style="{DynamicResource TagButton_Style}">
-                                        <TextBlock Text="{Binding GenreName}" Style="{StaticResource MangaTitle_Style}"/>
+                                        <TextBlock Text="{Binding GenreName}" Style="{StaticResource GenreName_Style}"/>
                                     </Button>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>

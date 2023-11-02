@@ -17,7 +17,7 @@ namespace MangaReader.Services
         readonly string AllGerneAPIUrl = "https://2yd98ioj81.execute-api.ap-southeast-1.amazonaws.com/dev/genres";
         readonly string MangaChaptersAPIUrl = "https://2yd98ioj81.execute-api.ap-southeast-1.amazonaws.com/dev/chapters/";
         readonly string ChapterImagesOfChapterAPIUrl = "https://2yd98ioj81.execute-api.ap-southeast-1.amazonaws.com/dev/images/";
-        readonly string AllMangasOfGenreAPIUrl = "https://s97qgvojxe.execute-api.ap-southeast-2.amazonaws.com/Production/mangas/";
+        readonly string AllMangasOfGenreAPIUrl = "https://2yd98ioj81.execute-api.ap-southeast-1.amazonaws.com/dev/all-mangas/genre/";
         public MangaService(){ }
 
         public async Task<ObservableCollection<MangaModel>> GetAllMangas()

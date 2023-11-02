@@ -11,12 +11,14 @@
                 <ResourceDictionary Source="Styles/CoverImage.xaml"/>
                 <ResourceDictionary Source="Styles/CoverImageDetail.xaml"/>
                 <ResourceDictionary Source="Styles/MangaTitle.xaml"/>
+                <ResourceDictionary Source="Styles/GenreName.xaml"/>
                 <ResourceDictionary Source="Styles/MangaTitleDetail.xaml"/>
                 <ResourceDictionary Source="Styles/Scene.xaml"/>
                 <ResourceDictionary Source="Styles/MangaITem.xaml"/>
                 <ResourceDictionary Source="Styles/LinkButton.xaml"/>
                 <ResourceDictionary Source="Styles/TagButton.xaml"/>
                 <ResourceDictionary Source="Styles/MangaDescriptionDisplay.xaml"/>
+                
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.Net.Http;
 using System.Linq;
 using System.Threading.Tasks;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace MangaReader.Services
 {
@@ -18,7 +19,8 @@ namespace MangaReader.Services
         readonly string MangaChaptersAPIUrl = "https://2yd98ioj81.execute-api.ap-southeast-1.amazonaws.com/dev/chapters/";
         readonly string ChapterImagesOfChapterAPIUrl = "https://2yd98ioj81.execute-api.ap-southeast-1.amazonaws.com/dev/images/";
         readonly string AllMangasOfGenreAPIUrl = "https://2yd98ioj81.execute-api.ap-southeast-1.amazonaws.com/dev/all-mangas/genre/";
-        public MangaService(){ }
+        readonly string SearchMangaAPIUrl = "https://2yd98ioj81.execute-api.ap-southeast-1.amazonaws.com/dev/search-mangas";
+        public MangaService() { }
 
         public async Task<ObservableCollection<MangaModel>> GetAllMangas()
         {
@@ -146,6 +148,34 @@ namespace MangaReader.Services
             try
             {
                 HttpResponseMessage response = await _httpClient.GetAsync(AllMangasOfGenreAPIUrl + genreId);
+                if (response.IsSuccessStatusCode)
+                {
+                    string responseBody = await response.Content.ReadAsStringAsync();
+
+                    var data = JsonConvert.DeserializeObject<ObservableCollection<MangaModel>>(responseBody);
+
+                    return data!;
+                }
+                else
+                {
+                    // Handle API error (e.g., non-200 status code)
+                    return null!;
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                // Handle any network-related errors
+                return null!;
+            }
+        }
+
+        public async Task<ObservableCollection<MangaModel>> GetSearchMangas(string keyword)
+        {
+            try
+            {
+                string apiUrl = $"{SearchMangaAPIUrl}?query={keyword}";
+
+                HttpResponseMessage response = await _httpClient.GetAsync(apiUrl);
                 if (response.IsSuccessStatusCode)
                 {
                     string responseBody = await response.Content.ReadAsStringAsync();

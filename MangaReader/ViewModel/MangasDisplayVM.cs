@@ -50,6 +50,8 @@ namespace MangaReader.ViewModel
             }
         }
 
+        bool isAllManga = true;
+
         public MangasDisplayVM(INavigationService navigationService, MangaStore mangaStore, GenreStore genreStore, MangaService mangaService)
         {
             Navigation = navigationService;
@@ -77,12 +79,9 @@ namespace MangaReader.ViewModel
 
         private void OnMangasListCreated(ObservableCollection<MangaModel> mangaModels)
         {
-           MangaModels = mangaModels;
-        }
+           isAllManga = true;
 
-        private async void ShowMangasOfGenre(GenreModel genreModel)
-        {
-            MangaModels = await FindMangasOfGenre(genreModel);
+           MangaModels = mangaModels;
         }
 
         private async Task<ObservableCollection<MangaModel>> FindMangasOfGenre(GenreModel genreModel)
@@ -112,9 +111,25 @@ namespace MangaReader.ViewModel
             Navigation?.NavigateTo<MangaDetailVM>();
         }
 
+        private async void ShowMangasOfGenre(GenreModel genreModel)
+        {
+            MangaModels = await FindMangasOfGenre(genreModel);
+            isAllManga = false;
+        }
+
         public async void ReloadAllManga()
         {
-            MangaModels = await _mangaService.GetAllMangas();
+            if (!isAllManga)
+            {
+                MangaModels = await _mangaService.GetAllMangas();
+                isAllManga = true;
+            }
+        }
+
+        public async void SearchMangas(string keyword)
+        {
+            MangaModels = await _mangaService.GetSearchMangas(keyword);
+            isAllManga = false;
         }
     }
 }

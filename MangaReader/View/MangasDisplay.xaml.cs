@@ -15,6 +15,8 @@ namespace MangaReader.View
 
         Button? currentButton;
 
+        bool isEnterHit = false;
+
         public MangasDisplay()
         {
             InitializeComponent();
@@ -113,23 +115,66 @@ namespace MangaReader.View
 
         private void SearchBox_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
-            searchBox.Text = "";
-            searchIcon.Visibility = Visibility.Hidden;
-            searchBox.Foreground = Brushes.Black;
+            if(searchBox.Text == "Search for manga")
+            {
+                searchBox.Text = "";
+                searchIcon.Visibility = Visibility.Hidden;
+                searchBox.Foreground = Brushes.Black;
+            }
         }
 
         private void SearchBox_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
-            searchBox.Text = "Search for manga";
+            if(!isEnterHit)
+            {
+                searchBox.Text = "Search for manga";
+            }
             searchIcon.Visibility = Visibility.Visible;
             searchBox.Foreground = Brushes.Gray;
+            isEnterHit = false;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            searchBox.Text = "Search for manga";
+            if (!isEnterHit)
+            {
+                searchBox.Text = "Search for manga";
+            }
             searchIcon.Visibility = Visibility.Visible;
             searchBox.Foreground = Brushes.Gray;
+            isEnterHit = false;
+        }
+
+        private void SearchBox_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                string searchText = searchBox.Text;
+
+                PerformSearch(searchText);
+
+                isEnterHit = true;
+
+                outerScrollViewer.Focus();
+
+            }
+        }
+
+        private void PerformSearch(string searchText)
+        {
+            if(DataContext is MangasDisplayVM viewModel)
+            {
+                if (searchText.Length > 0)
+                {
+                    viewModel.SearchMangas(searchText);
+                }
+                else
+                {
+                    searchBox.Text = "Search for manga";
+
+                    viewModel.ReloadAllManga();
+                }
+            }
         }
     }
 }

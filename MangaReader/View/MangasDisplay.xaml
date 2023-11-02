@@ -98,7 +98,9 @@
                         HorizontalContentAlignment="Center"
                         VerticalContentAlignment="Center"
                         GotKeyboardFocus="SearchBox_GotKeyboardFocus"
-                        LostKeyboardFocus="SearchBox_LostKeyboardFocus">        
+                        LostKeyboardFocus="SearchBox_LostKeyboardFocus"
+                        KeyUp="SearchBox_KeyUp"
+                    >        
                         <TextBox.Resources>
                             <Style TargetType="Border">
                                 <Setter Property="CornerRadius" Value="7.5"/>

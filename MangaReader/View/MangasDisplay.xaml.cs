@@ -119,7 +119,6 @@ namespace MangaReader.View
             {
                 searchBox.Text = "";
                 searchIcon.Visibility = Visibility.Hidden;
-                searchBox.Foreground = Brushes.Black;
             }
         }
 
@@ -130,7 +129,6 @@ namespace MangaReader.View
                 searchBox.Text = "Search for manga";
             }
             searchIcon.Visibility = Visibility.Visible;
-            searchBox.Foreground = Brushes.Gray;
             isEnterHit = false;
         }
 
@@ -141,7 +139,6 @@ namespace MangaReader.View
                 searchBox.Text = "Search for manga";
             }
             searchIcon.Visibility = Visibility.Visible;
-            searchBox.Foreground = Brushes.Gray;
             isEnterHit = false;
         }
 

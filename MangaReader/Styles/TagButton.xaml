@@ -2,11 +2,11 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Style x:Key="TagButton_Style" TargetType="Button">
         <Setter Property="BorderBrush"
-                Value="White"/>
+                Value="{DynamicResource Border_UI}"/>
         <Setter Property="BorderThickness"
                 Value="1" />
         <Setter Property="Background"
-                Value="Transparent"/>
+                Value="{DynamicResource BG_UI}"/>
         <Setter Property="Padding"
                 Value="5 0"/>
         <Setter Property="Margin"

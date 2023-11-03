@@ -53,6 +53,14 @@ namespace MangaReader
                 };
                 Resources.MergedDictionaries.Add(darkModeResources);
             }
+            else
+            {
+                ResourceDictionary lightModeResources = new()
+                {
+                    Source = new Uri("Themes/LightModeResources.xaml", UriKind.Relative)
+                };
+                Resources.MergedDictionaries.Add(lightModeResources);
+            }
 
             //initialize the view models
             _serviceProvider.GetRequiredService<MangaDetailVM>();

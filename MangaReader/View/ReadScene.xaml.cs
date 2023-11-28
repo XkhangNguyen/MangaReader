@@ -101,7 +101,7 @@ namespace MangaReader.View
 
                 foreach (var imageUrl in viewModel.ChapterModel?.ChapterImageURLs!)
                 {
-                   await DownloadAndDisplayImage(imageUrl, token);
+                   await DownloadAndDisplayImage("https://i.pinimg.com/236x/5e/c9/52/5ec95263d4b1f43da42529206add991c.jpg", token);
                 }
             }
         }

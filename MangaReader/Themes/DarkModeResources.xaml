@@ -1,9 +1,9 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <SolidColorBrush Color="Black" x:Key="BackgroundColor"/>
-    <SolidColorBrush Color="#FBFF1C" x:Key="MangaTitle"/>
+    <SolidColorBrush Color="#FF5F1F" x:Key="MangaTitle"/>
     <SolidColorBrush Color="#FBFF1C" x:Key="MangaDescription"/>
-    <SolidColorBrush Color="#66FAFF" x:Key="ChapterNumber"/>
+    <SolidColorBrush Color="#02FEE4" x:Key="ChapterNumber"/>
     <SolidColorBrush Color="#FF0677" x:Key="Border_UI"/>
     <SolidColorBrush Color="#1f1f1f" x:Key="MangaBG"/>
     <SolidColorBrush Color="#FBFF1C" x:Key="GenreName"/>

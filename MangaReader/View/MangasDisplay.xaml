@@ -220,47 +220,6 @@
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
-
-            <TextBlock 
-                Grid.Row="0" 
-                HorizontalAlignment="Center" 
-                VerticalAlignment="Center" 
-                Margin="20" Text="SAVED GENRES" Foreground="{DynamicResource Text_UI}" Style="{StaticResource MangaTitle_Style}"
-            />
-            <ScrollViewer 
-                x:Name="rightScrollViewer"
-                Grid.Row="1" VerticalScrollBarVisibility="Hidden"
-                MouseEnter="ScrollViewer_MouseEnter" 
-                MouseLeave="ScrollViewer_MouseLeave"
-            >
-                <ItemsControl ItemsSource="{Binding GenreModels}">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <UniformGrid Columns="1" MaxWidth="150"/>
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Button
-                                Style="{StaticResource TagButton_Style}"
-                                Command="{Binding DataContext.ShowMangasOfGenreCommand, 
-                                          RelativeSource={RelativeSource 
-                                          AncestorType=UserControl}}"
-                                CommandParameter="{Binding}"
-                                Click="GenreButton_Click"
-                            >
-                                <Button.Resources>
-                                    <Style TargetType="Border">
-                                        <Setter Property="CornerRadius" Value="10"/>
-                                    </Style>
-                                </Button.Resources>
-                                
-                                <TextBlock Margin="0 5" Text="{Binding GenreName}" Style="{StaticResource GenreName_Style}"/>
-                            </Button>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </ScrollViewer>
         </Grid>
     </Grid>
 </UserControl>

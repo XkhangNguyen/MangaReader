@@ -80,11 +80,10 @@ namespace MangaReader.View
 
         private void UpdateMaxHeight()
         {
-            if (leftScrollViewer != null && rightScrollViewer != null)
+            if (leftScrollViewer != null)
             {
                 double screenHeight = ActualHeight - 65; // Adjust padding as needed
                 leftScrollViewer.MaxHeight = screenHeight;
-                rightScrollViewer.MaxHeight = screenHeight;
                 outerScrollViewer.MaxHeight = ActualHeight;
             }
         }

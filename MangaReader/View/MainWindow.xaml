@@ -8,31 +8,6 @@
         >
 
     <Grid Background="{DynamicResource BackgroundColor}">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="80"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <Border Background="#002e36" BorderBrush="#02a2ba" BorderThickness="0,0,1,0" Grid.Column="0" Width="80">
-            <Border.Style>
-                <Style TargetType="Border">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding ShowSideBar}" Value="False">
-                            <Setter Property="Visibility" Value="Collapsed"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Border.Style>
-
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-                </Grid.RowDefinitions>
-                <Button Grid.Row="0" Command="{Binding NavigateBackCommand}">Back</Button>
-                <Button Grid.Row="1" Command="{Binding MangaDisplayCommand}">Manga Display</Button>
-
-            </Grid>
-        </Border>
         <ContentControl Grid.Column="1" x:Name="Scenes"
                         Content="{Binding Navigation.CurrentView}"/>
     </Grid>

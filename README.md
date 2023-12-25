@@ -6,6 +6,10 @@
 
 Welcome to the Manga Reader project! This WPF application, powered by AWS, delivers an immersive manga reading experience with a focus on user-friendly features and customization options.
 
+## Get the Application
+
+You can download the latest version of the application from [Google Drive]([link_to_your_google_drive_zip_file](https://drive.google.com/file/d/19_YLjtKmRmIBC5Yrxojni6KzESWDiWE7/view?usp=sharing)).
+
 ## Key Features
 
 - **Intuitive Interface:** Enjoy a seamless navigation experience through manga collections with a clean and user-friendly interface.

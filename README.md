@@ -17,20 +17,13 @@ Welcome to the Manga Reader project! This WPF application, powered by AWS, deliv
 ## Screenshots
 
 ![Screenshot 1](MangaReader/Images/Screenshots/MangaDisplay.png)
-*Caption for Screenshot 1.*
 
 ![Screenshot 2](MangaReader/Images/Screenshots/MangaDetail.png)
-*Caption for Screenshot 2.*
 
 ## Usage
 
-Explore the Manga Reader's rich feature set for an enhanced manga reading experience. Dive into the world of your favorite manga series with ease and enjoy a personalized touch to your reading preferences.
-
-## AWS Services Used
-
-- **AWS API Gateway:** Efficiently retrieve manga content from the server.
-
+Explore the Manga Reader's rich feature set for an enhanced manga reading experience. Dive into the world of your favorite manga series with ease and enjoy them.
 
 ## Acknowledgments
 
-- [Any libraries or resources you want to acknowledge]
+- The manga content featured in this project is not owned by me, and the project is not intended for commercial purposes.

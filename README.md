@@ -1,6 +1,6 @@
 # Manga Reader Project
 
-![Project Logo/Icon](MangaReader/Images/Icon.jpg)
+<img src="MangaReader/Images/Icon.jpg" alt="Project Logo/Icon" width="100" height="100">
 
 ## Overview
 

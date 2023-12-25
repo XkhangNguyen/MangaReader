@@ -8,7 +8,7 @@ Welcome to the Manga Reader project! This WPF application, powered by AWS, deliv
 
 ## Get the Application
 
-You can download the latest version of the application from [Google Drive]([link_to_your_google_drive_zip_file](https://drive.google.com/file/d/19_YLjtKmRmIBC5Yrxojni6KzESWDiWE7/view?usp=sharing)).
+You can get the application from [Google Drive](https://drive.google.com/file/d/19_YLjtKmRmIBC5Yrxojni6KzESWDiWE7/view?usp=sharing).
 
 ## Key Features
 

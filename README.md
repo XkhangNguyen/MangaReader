@@ -4,7 +4,7 @@
 
 ## Overview
 
-Welcome to the Manga Reader project! This WPF application, powered by AWS, delivers an immersive manga reading experience with a focus on user-friendly features and customization options.
+Welcome to the Manga Reader project! This WPF application, powered by AWS, delivers an immersive manga reading experience with a focus on user-friendly features.
 
 ## Get the Application
 
